@@ -1,0 +1,8 @@
+const getProducts = () => {
+    
+
+}
+
+const getLocations = () => {
+
+}
