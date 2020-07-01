@@ -1,13 +1,10 @@
-import React, { Component } from 'react';
-import {
-    Navbar,
-    Nav
-} from 'react-bootstrap';
+import React from 'react';
+import { Navbar, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import '../custom.scss';
 
 const NavBarComponent = () => (
-    < Navbar variant = "dark"
+    <Navbar variant = "dark"
     className="navBar"
     >
         <Nav className="justify-content-end" style={{ float: 'left' }}>

@@ -1,4 +1,4 @@
-import intialState from '../State/locationState';
+import intialState from '../../../State/location';
 
 export default function location(state = intialState, action) {
     switch (action.type) {

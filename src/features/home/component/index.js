@@ -1,26 +1,20 @@
 import React, { Component } from 'react';
 import { Container,Row, Col, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import NavBar from '../../../components/navBar';
 import SelectByProduct from '../../../components/selectByProduct';
 import SelectByDate from '../../../components/selectByDate';
+import LoadingProduct from '../../../components/loading';
 import '../../../custom.scss';
-import fetchingService from '../../../services/productService';
+import { getProductsIfNeeded } from '../../../services/productService';
 
 class HomePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             startDate : new Date(),
-            selectedProduct: {},
-            products: [{
-                name: 'Product 1',
-                id: 1
-            }, 
-            {
-                name: 'Product 2',
-                id: 2
-            }]
-            }
+            selectedProduct: {}
+        }
     }
     
     handleChange = (date) => this.setState({
@@ -31,15 +25,19 @@ class HomePage extends Component {
         selectedProduct: product
     });
     componentDidMount () {
-        // fetch products list from api
-        console.log(this.props, 'Props');
+        const { dispatch } = this.props;
+        dispatch(getProductsIfNeeded()); // fetch products list from api
     }
     render() {
         return (
             <div>
                 <NavBar></NavBar>
                 <Container>
-                    <SelectByProduct products={this.state.products} onClick={this.getSelectedProduct}/>
+                    {
+                    this.props.isLoadingProducts ? 
+                    <LoadingProduct/> : 
+                    <SelectByProduct products={this.props.products} onClick={this.getSelectedProduct}/>
+                    }
                     <SelectByDate startDate={this.state.startDate} onChange={this.handleChange} />
                     <Row>
                         <Col lg="2" xs="12">
@@ -57,4 +55,13 @@ class HomePage extends Component {
     }
 }
 
-export default HomePage;
+const mapStateToProps = state => {
+    return {
+        products: state.product.data,
+        isLoadingProducts: state.product.isLoading,
+        locations: state.location.data,
+        isLoadingLocations: state.location.isLoading
+    }
+};
+
+export default connect(mapStateToProps)(HomePage);

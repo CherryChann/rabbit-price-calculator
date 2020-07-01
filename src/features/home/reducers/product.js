@@ -1,4 +1,4 @@
-import intialState from '../State/productState';
+import intialState from '../../../State/product';
 
 export default function product(state = intialState, action) {
     switch (action.type) {
