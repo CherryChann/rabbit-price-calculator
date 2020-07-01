@@ -2,6 +2,14 @@
     "plugins": [
         ["@babel/plugin-proposal-class-properties", {
             "loose": true
+        }],
+        ["module-resolver", {
+            "root": ["./src"],
+            "alias": {
+                "@state": "./src/state",
+                "@components": "./src/components",
+                "@services": "./src/services"
+            }
         }]
     ],
     "presets": ["@babel/preset-env", "@babel/preset-react"]
