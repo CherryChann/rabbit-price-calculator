@@ -4,12 +4,17 @@ import {
     Nav
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import '../custom.scss';
 
 const NavBarComponent = () => (
-    <Navbar variant="dark" style={{ justifyContent: 'center', backgroundColor: 'rgb(26,188,156,0.8)' }}>
+    < Navbar variant = "dark"
+    className="navBar"
+    >
         <Nav className="justify-content-end" style={{ float: 'left' }}>
             <Link key={0} to="/" style={{ textDecoration: 'none' }}>
-                <Nav.Item className="nav-link" as="li" style={{ color: 'white', fontWeight: 'bold' }}>Rabbit Finance Price Calculator</Nav.Item>
+                <Nav.Item className="nav-link" as="li" >
+                    <span>Rabbit Finance Price Calculator</span>
+                </Nav.Item>
             </Link>
         </Nav>
     </Navbar>
