@@ -11,6 +11,11 @@ export default function product(state = intialState, action) {
                 isLoading: action.product.isLoading,
                 data: action.product.data
             })
+        case 'FAILED_LOCATIONS':
+            return Object.assign({}, state, {
+                isError: action.product.isError,
+                errorMessage: action.product.message
+            })
         default:
             return state
     }

@@ -1,12 +1,12 @@
 import APIManager from './APIManager'
 export const REQUEST_LOCATIONS = 'REQUEST_LOCATIONS';
 export const RECEIVE_LOCATIONS = 'RECEIVE_LOCATIONS';
-
+export const FAILED_LOCATIONS = 'FAILED_LOCATIONS';
 
 export const requestLocations = () => {
     return {
         type: 'REQUEST_LOCATIONS',
-        LOCATIONS: {
+        location: {
             isLoading: true
         }
     }
@@ -16,26 +16,44 @@ export const requestLocations = () => {
 const receiveLocations = (data) => {
     return {
         type: 'RECEIVE_LOCATIONS',
-        LOCATIONS: {
+        location: {
             isLoading: false,
             data: data
         }
     }
 }
-
+export const failedLocations = (message) => {
+    return {
+        type: 'FAILED_LOCATIONS',
+        location: {
+            errorMessage: message,
+            isError: true
+        }
+    }
+}
 const fetchLocations = () => {
     return dispatch => {
         dispatch(requestLocations())
-        APIManager.axios.get('/LOCATIONS')
-        .then(response => response.json())
-        .then(json => dispatch(receiveLocations(json)))
+        APIManager.axios.get('/locations')
+        .then(response => {
+            if (response.status === 200) {
+                let locations = response.data
+                console.log(response, 'response from location api')
+                dispatch(receiveLocations(locations))
+            } else {
+                dispatch(failedLocations(APIManager.error.notfound))
+            }
+        }).catch(err => {
+            console.log(err)
+            dispatch(failedLocations(APIManager.error.network))
+        });
     }
 }
 
 export default receiveLocations;
 
 const shouldGetLocationsAgain = (state) => {
-    if (state.locations.data.length) {
+    if (state.location.data.length) {
         return false;
     } else {
         return true;

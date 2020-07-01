@@ -7,7 +7,10 @@ import NavBar from '@components/navBar';
 import SelectByProduct from '@components/selectByProduct';
 import SelectByDate from '@components/selectByDate';
 import LoadingProduct from '@components/loading';
-import { getProductsIfNeeded } from '@services/productService'; // need to do for pretty directory 
+import SelectByLocation from '@components/selectByLocation';
+import { getProductsIfNeeded } from '@services/productService'; 
+import { getLocationsIfNeeded } from '@services/locationService'; // need to do for pretty directory 
+
 import '../../../custom.scss';
 
 class HomePage extends Component {
@@ -17,10 +20,17 @@ class HomePage extends Component {
             startDate: addDays(new Date(), 1),
             minDate: addDays(new Date(), 1),
             maxDate: addDays(new Date(),7),
+            showMap: false,
             selectedProduct: {}
         }
     }
-    
+    componentDidMount () {
+        const { dispatch } = this.props;
+        dispatch(getProductsIfNeeded()); // fetch products list from api
+        dispatch(getLocationsIfNeeded()); // fetch locations list from api
+
+    }
+
     handleChange = (date) => this.setState({
         startDate: date
     });
@@ -28,19 +38,19 @@ class HomePage extends Component {
     getSelectedProduct = (product) => this.setState({
         selectedProduct: product
     });
-    componentDidMount () {
-        const { dispatch } = this.props;
-        dispatch(getProductsIfNeeded()); // fetch products list from api
-    }
+
+    showMap = () => this.setState({
+        showMap: true
+    })
     render() {
         return (
             <div>
                 <NavBar></NavBar>
                 <Container>
                     {
-                    this.props.isLoadingProducts ? 
-                    <LoadingProduct/> : 
-                    <SelectByProduct products={this.props.products} onClick={this.getSelectedProduct}/>
+                        this.props.isLoadingProducts ? 
+                        <LoadingProduct/> : 
+                        <SelectByProduct products={this.props.products} onClick={this.getSelectedProduct}/>
                     }
                     <SelectByDate startDate={this.state.startDate} minDate={this.state.minDate} maxDate={this.state.maxDate} onChange={this.handleChange} />
                     <Row>
@@ -49,9 +59,14 @@ class HomePage extends Component {
                             
                         </Col>
                         <Col lg="3" xs="12" className="form-group">
-                            <Button variant="outline-dark">Add Location</Button>
+                            <Button variant="outline-dark" onClick={this.showMap}>Add Location</Button>
                         </Col>
                     </Row>
+                    {
+                        !this.props.isLoadingLocations && this.state.showMap ?
+                        <SelectByLocation locations={this.props.locations} /> : 
+                        <LoadingProduct />
+                    }
             </Container>
             </div>
             
