@@ -4,7 +4,7 @@ import NavBar from '../../../components/navBar';
 import SelectByProduct from '../../../components/selectByProduct';
 import SelectByDate from '../../../components/selectByDate';
 import '../../../custom.scss';
-import fetchingService from '../../../services/fetchingService';
+import fetchingService from '../../../services/productService';
 
 class HomePage extends Component {
     constructor(props) {
