@@ -9,6 +9,7 @@ import SelectByDate from '@components/selectByDate';
 import Loading from '@components/loading';
 import SelectByLocation from '@components/map';
 import LocationTable from '@components/locationTable';
+import Total from '@components/total';
 import { getProductsIfNeeded } from '@services/productService'; 
 import { getLocationsIfNeeded } from '@services/locationService'; // need to do for pretty directory 
 
@@ -18,13 +19,16 @@ class HomePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            totalUnits: 0,
+            totalCost: 0,
             startDate: addDays(new Date(), 1),
             minDate: addDays(new Date(), 1),
             maxDate: addDays(new Date(),7),
             showMap: false,
             selectedProduct: {},
             selectedDate: '',
-            selectedLocations: []
+            selectedLocations: [],
+            locations: {}
         }
     }
     componentDidMount () {
@@ -62,23 +66,63 @@ class HomePage extends Component {
     }
 
     getQuantity = (location, quantity) => {
-        console.log(location,quantity);
-        
-        // this.setState({
-        //     locations: result
-        // })
+        this.state.selectedLocations.map((stateLocation) => {
+            if(stateLocation.id === location.id) {
+              stateLocation.quantity = parseInt(quantity);
+              stateLocation.price = location.fee + (this.state.selectedProduct.price_per_unit * parseInt(quantity))
+            }  
+        })
+        let result = this.state.selectedLocations;
+        let total = this.calculateTotalUnits(this.state.selectedLocations);
+        let totalCost = this.calculateTotalCost(this.state.selectedLocations);
+
+        this.setState({
+            selectedLocations: result,
+            totalUnits: total,
+            totalCost
+        })
     }
     onSelectLocation = (selectedLocation) => {
         console.log(selectedLocation, 'SelectedLocation', this.state.selectedLocations)
+        selectedLocation['price'] = 10;
+        selectedLocation['quantity'] = 10;
+
         this.state.selectedLocations.push(selectedLocation);
-        this.hideMap();
+        let total = this.calculateTotalUnits(this.state.selectedLocations);
+        let totalCost = this.calculateTotalCost(this.state.selectedLocations);
+        this.setState({
+            totalUnits: total,
+            showMap: false,
+            totalCost
+        })
+        
     }
 
+    calculateTotalUnits = (locations) => {
+        let total = 0;
+        locations.map(location => {
+            total += location.quantity
+        })
+        return total;
+    }
+
+    calculateTotalCost = (locations) => {
+        let totalCost = 0;
+        locations.map(location => {
+            let locationCost = location.fee + (this.state.selectedProduct.price_per_unit * parseInt(location.quantity))
+            totalCost += locationCost;
+        })
+        return totalCost;
+    }
     removeLocation = (removedLocation) => {
         console.log('remove');
         const result = this.state.selectedLocations.filter(location => location.id !== removedLocation.id)
+        let total = this.calculateTotalUnits(result);
+        let totalCost = this.calculateTotalCost(result);
         this.setState({
-            selectedLocations: result
+            selectedLocations: result,
+            totalUnits: total,
+            totalCost
         })
 
     }
@@ -124,7 +168,7 @@ class HomePage extends Component {
                         }
                         {
                             this.state.selectedLocations.length !== 0 && this.state.selectedProduct && (
-                                < LocationTable locations = {
+                                <LocationTable locations = {
                                     this.state.selectedLocations
                                 }
                                 onRemove = {
@@ -133,11 +177,23 @@ class HomePage extends Component {
                                 product = {
                                     this.state.selectedProduct
                                 }
-
-                                getQuantity= {
+                                pLocations = {
+                                    this.state.locations
+                                }
+                                getPrice= {
                                     this.getQuantity
                                 }
                                 />
+                            )
+                        }
+                        {
+                            this.state.selectedLocations.length !== 0 && this.state.selectedProduct && (
+                                <Total text="Total Units:" value={this.state.totalUnits}></Total>
+                            )
+                        }
+                        {
+                            this.state.selectedLocations.length !== 0 && this.state.selectedProduct && (
+                                <Total text="Total Cost:" value={this.state.totalCost}></Total>
                             )
                         }
                     </Container> 

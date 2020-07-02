@@ -35,6 +35,7 @@
     "react-bootstrap": "^1.0.1",
     "react-bootstrap-icons": "^1.0.2-alpha4",
     "react-datepicker": "^3.0.0",
+    "react-device-detect": "^1.13.1",
     "react-dom": "^16.13.1",
     "react-google-maps": "^9.4.5",
     "react-redux": "^7.2.0",

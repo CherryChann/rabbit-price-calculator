@@ -81,6 +81,7 @@ const WrappedMapComponent = compose(
 
 const mapComponet = ({locations, mapStatus, handleClose, onSelectLocation, selectedLocations}) => {
     return (
+        
         <Modal show={mapStatus}
             size = "lg"
             onHide={handleClose}
