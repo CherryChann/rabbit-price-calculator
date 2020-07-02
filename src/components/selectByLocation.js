@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
-
+import MapComponent from '@components/map';
 const selectLocation = ({ locations, onChange }) => (
     <Row>
         <Col lg="2" xs="12">

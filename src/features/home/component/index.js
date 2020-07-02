@@ -7,7 +7,7 @@ import NavBar from '@components/navBar';
 import SelectByProduct from '@components/selectByProduct';
 import SelectByDate from '@components/selectByDate';
 import LoadingProduct from '@components/loading';
-import SelectByLocation from '@components/selectByLocation';
+import SelectByLocation from '@components/map';
 import { getProductsIfNeeded } from '@services/productService'; 
 import { getLocationsIfNeeded } from '@services/locationService'; // need to do for pretty directory 
 
