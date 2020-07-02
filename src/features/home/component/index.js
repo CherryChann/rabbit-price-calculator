@@ -39,9 +39,19 @@ class HomePage extends Component {
         selectedProduct: product
     });
 
-    showMap = () => this.setState({
-        showMap: true
-    })
+    showMap = () => {
+        console.log('showmap');
+        this.setState({
+            showMap: true
+        })
+    }
+
+    hideMap = () => {
+        console.log('hidemap');
+        this.setState({
+            showMap: false
+        })
+    }
     render() {
         return (
             <div>
@@ -64,7 +74,7 @@ class HomePage extends Component {
                     </Row>
                     {
                         !this.props.isLoadingLocations && this.state.showMap ?
-                        <SelectByLocation locations={this.props.locations} /> : 
+                        <SelectByLocation locations={this.props.locations} mapStatus={true} handleClose={this.hideMap}/> : 
                         <LoadingProduct />
                     }
             </Container>

@@ -49,28 +49,13 @@ const WrappedMapComponent = compose(
     )
 });
 
-// const WrappedMapComponent = withScriptjs(withGoogleMap((props) => {
 
-//     return (
-//         <GoogleMap 
-//             defaultZoom = {10}
-//             defaultCenter = {
-//             {
-//                 lat: 13.756331,
-//                 lng: 100.501762
-//             }
-//             }>
-//         </GoogleMap>
-//     )
-// }));
-
-const mapComponet = ({locations}) => {
-    const [show, setShow] = useState(true);
-
-    const handleClose = () => setShow(false);
+const mapComponet = ({locations, mapStatus, handleClose}) => {
+    // const [show, setShow] = useState(true);
+    // const handleClose = () => setShow(false);
     // const handleShow = () => setShow(true);
     return (
-        <Modal show={show}
+        <Modal show={mapStatus}
             size = "lg"
             onHide={handleClose}
             backdrop="static"
