@@ -31,12 +31,14 @@ class HomePage extends Component {
         const { dispatch } = this.props;
         dispatch(getProductsIfNeeded()); // fetch products list from api
         dispatch(getLocationsIfNeeded()); // fetch locations list from api
-
     }
 
-    handleChange = (date) => this.setState({
-        selectedDate: date
-    });
+    handleChange = (date) => {
+        this.setState({
+            selectedDate: date,
+            startDate: date
+        });
+    }
 
     getSelectedProduct = (productId) => {
         const selectedProduct = this.props.products.find(product => product.id === productId)
@@ -59,6 +61,13 @@ class HomePage extends Component {
         })
     }
 
+    getQuantity = (location, quantity) => {
+        console.log(location,quantity);
+        
+        // this.setState({
+        //     locations: result
+        // })
+    }
     onSelectLocation = (selectedLocation) => {
         console.log(selectedLocation, 'SelectedLocation', this.state.selectedLocations)
         this.state.selectedLocations.push(selectedLocation);
@@ -81,24 +90,40 @@ class HomePage extends Component {
                     this.props.isLoadingProducts && this.props.isLoadingLocations ?
                     <Loading/> :
                     <Container>
-                        <SelectByProduct products={this.props.products} onClick={this.getSelectedProduct}/>
+                        < SelectByProduct products = {
+                            this.props.products
+                        }
+                        onClick = {
+                            this.getSelectedProduct
+                        }
+                        />
                         <SelectByDate startDate={this.state.startDate} minDate={this.state.minDate} maxDate={this.state.maxDate} onChange={this.handleChange} />
-                        <Row>
-                            <Col lg="2" xs="12">
-                                <span>Locations: </span>
-                                
-                            </Col>
-                            <Col lg="3" xs="12" className="form-group">
-                                <Button variant="outline-dark" onClick={this.showMap}>Add Location</Button>
-                            </Col>
-                        </Row>
                         {
-                            !this.props.isLoadingLocations && this.state.showMap && (
-                                <SelectByLocation locations={this.props.locations} mapStatus={true} handleClose={this.hideMap} onSelectLocation={this.onSelectLocation}/> 
+                            Object.entries(this.state.selectedProduct).length !== 0 && this.state.selectedDate && (
+                                <Row>
+                                    <Col lg="2" xs="12">
+                                        <span>Locations: </span>
+                                        
+                                    </Col>
+                                    <Col lg="3" xs="12" className="form-group">
+                                        <Button variant="outline-dark" onClick={this.showMap}>Add Location</Button>
+                                    </Col>
+                                </Row>
+                                
                             )
                         }
                         {
-                            this.state.selectedLocations.length !== 0 && (
+                            !this.props.isLoadingLocations && this.state.showMap && (
+                                <SelectByLocation 
+                                    locations={this.props.locations} 
+                                    mapStatus={true} 
+                                    handleClose={this.hideMap} 
+                                    selectedLocations={this.state.selectedLocations}
+                                    onSelectLocation={this.onSelectLocation}/> 
+                            )
+                        }
+                        {
+                            this.state.selectedLocations.length !== 0 && this.state.selectedProduct && (
                                 < LocationTable locations = {
                                     this.state.selectedLocations
                                 }
@@ -107,6 +132,10 @@ class HomePage extends Component {
                                 }
                                 product = {
                                     this.state.selectedProduct
+                                }
+
+                                getQuantity= {
+                                    this.getQuantity
                                 }
                                 />
                             )

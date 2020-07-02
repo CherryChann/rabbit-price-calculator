@@ -64,6 +64,9 @@ const WrappedMapComponent = compose(
                                             props.onSelectLocation(selectedLocation)
                                         }
                                     }
+                                    disabled = {
+                                        props.selectedLocations.find(location => location.id === selectedLocation.id)
+                                    }
                                 > Add </Button>
                             </Col>
                         </Row>
@@ -76,7 +79,7 @@ const WrappedMapComponent = compose(
 });
 
 
-const mapComponet = ({locations, mapStatus, handleClose, onSelectLocation}) => {
+const mapComponet = ({locations, mapStatus, handleClose, onSelectLocation, selectedLocations}) => {
     return (
         <Modal show={mapStatus}
             size = "lg"
@@ -90,6 +93,9 @@ const mapComponet = ({locations, mapStatus, handleClose, onSelectLocation}) => {
                     <WrappedMapComponent
                         locations={locations}
                         onSelectLocation={onSelectLocation}
+                        selectedLocations = {
+                            selectedLocations
+                        }
                     />
                 </Modal.Body>
         </Modal>
