@@ -10,10 +10,10 @@ const selectByProduct = ({products, onClick}) => (
             <Form.Group>
                 <Form.Control as="select" defaultValue="Select Products..." 
                     onChange={ value => onClick(value.target.value) } >
-                    {products.map((product, index) => (
-                        <option value={product.id} key={index}>{product.name}</option>
+                    {products.map((product) => (
+                        <option value={product.id} key={product.id}>{product.name}</option>
                     ))}
-            </Form.Control>
+                </Form.Control>
             </Form.Group>
         </Col>
     </Row>

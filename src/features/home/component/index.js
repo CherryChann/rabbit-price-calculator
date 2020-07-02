@@ -38,9 +38,12 @@ class HomePage extends Component {
         selectedDate: date
     });
 
-    getSelectedProduct = (product) => this.setState({
-        selectedProduct: product
-    });
+    getSelectedProduct = (productId) => {
+        const selectedProduct = this.props.products.find(product => product.id === productId)
+        this.setState({
+            selectedProduct
+        });
+    }
 
     showMap = () => {
         console.log('showmap');
@@ -50,7 +53,7 @@ class HomePage extends Component {
     }
 
     hideMap = () => {
-        console.log('hidemap');
+        console.log('hidemap',this.state.selectedProduct);
         this.setState({
             showMap: false
         })
@@ -96,7 +99,16 @@ class HomePage extends Component {
                         }
                         {
                             this.state.selectedLocations.length !== 0 && (
-                                <LocationTable locations={this.state.selectedLocations} onRemove={this.removeLocation}/>
+                                < LocationTable locations = {
+                                    this.state.selectedLocations
+                                }
+                                onRemove = {
+                                    this.removeLocation
+                                }
+                                product = {
+                                    this.state.selectedProduct
+                                }
+                                />
                             )
                         }
                     </Container> 

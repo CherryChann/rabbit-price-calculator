@@ -1,6 +1,6 @@
 import React from 'react';
-import { Table, Button } from 'react-bootstrap';
-const locationTableComponent = ({locations, onRemove}) => {
+import { Table, Button, Form } from 'react-bootstrap';
+const locationTableComponent = ({locations, onRemove,product}) => {
     return (
         <Table responsive="sm">
             <thead>
@@ -19,8 +19,15 @@ const locationTableComponent = ({locations, onRemove}) => {
                         <tr key={location.id}>
                             <td>{index+1}</td>
                             <td>{location.name}</td>
-                            <td>{location.max_dist}</td>
-                            <td>{location.fee}</td>
+                            <td>
+                                < Form.Control type = "number"
+                                placeholder = "quantity"
+                                defaultValue = {
+                                    location.max_dist
+                                }
+                                />
+                            </td>
+                            <td>{product.name}</td>
                             <td>
                                 <Button onClick={() => onRemove(location)}>Remove</Button>
                             </td>
