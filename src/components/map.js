@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { GoogleMap, withGoogleMap, withScriptjs, Marker, InfoWindow } from 'react-google-maps';
-import { Modal } from 'react-bootstrap';
+import { Row, Col, Modal, Container, Button } from 'react-bootstrap';
 import { compose, withProps } from "recompose"
 
 const WrappedMapComponent = compose(
@@ -42,7 +42,25 @@ const WrappedMapComponent = compose(
                     onCloseClick={() => {
                         setSelectedLocation(null)
                     }}>
-                    <div>{selectedLocation.name}</div>
+                    <Container>
+                        <Row>
+                            <Col className="form-group">
+                                <h5>{selectedLocation.name}</h5>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sx='6' lg='8' className="form-group">Max Units:</Col>
+                            <Col className="form-group">{selectedLocation.max_dist}</Col>
+                        </Row>
+                        <Row>
+                            <Col sx='6' lg='8' md='8'sm='8' className="form-group">Fees:</Col>
+                            <Col className="form-group">{selectedLocation.fee}</Col>
+                        </Row>
+                        <Row>
+                            <Col className="form-group info-window-button-col"><Button> Add </Button></Col>
+                        </Row>
+                    </Container>
+                    
                 </InfoWindow>
             )}
         </GoogleMap>
@@ -51,9 +69,6 @@ const WrappedMapComponent = compose(
 
 
 const mapComponet = ({locations, mapStatus, handleClose}) => {
-    // const [show, setShow] = useState(true);
-    // const handleClose = () => setShow(false);
-    // const handleShow = () => setShow(true);
     return (
         <Modal show={mapStatus}
             size = "lg"
