@@ -1,17 +1,68 @@
 import React, { useState } from 'react';
-import { GoogleMap, withGoogleMap, withScriptjs } from 'react-google-maps';
+import { GoogleMap, withGoogleMap, withScriptjs, Marker, InfoWindow } from 'react-google-maps';
 import { Modal } from 'react-bootstrap';
-const WrappedMapComponent = withScriptjs(withGoogleMap((props) =>
-    <GoogleMap 
-        defaultZoom = {10}
-        defaultCenter = {
-            {
-                lat: 13.756331,
-                lng: 100.501762
-            }
-        }
-    />
-));
+import { compose, withProps } from "recompose"
+
+const WrappedMapComponent = compose(
+  withProps({
+    googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBg3iAIPcacaGNiW3MudLqiEbLwgfHTHoI",
+    loadingElement: <div style={{ height: `100%` }} />,
+    containerElement: <div style={{ height: `400px` }} />,
+    mapElement: <div style={{ height: `100%` }} />,
+  }),
+  withScriptjs,
+  withGoogleMap
+)((props) => {
+    const [selectedLocation, setSelectedLocation ] = useState(null);
+    return(
+        <GoogleMap
+            defaultZoom={12}
+            defaultCenter={{  lat: 13.756331, lng: 100.501762 }}
+        >
+            {props.locations.map(location => (
+                <Marker
+                    key={location.id}
+                    position={{
+                        lat: location.lat,
+                        lng: location.long
+                    }}
+                    onClick={() => {
+                        setSelectedLocation(location)
+                    }}
+                />
+            ))}
+            { selectedLocation && (
+                <InfoWindow 
+                    position = {
+                        {
+                            lat: selectedLocation.lat,
+                            lng: selectedLocation.long
+                        }
+                    } 
+                    onCloseClick={() => {
+                        setSelectedLocation(null)
+                    }}>
+                    <div>{selectedLocation.name}</div>
+                </InfoWindow>
+            )}
+        </GoogleMap>
+    )
+});
+
+// const WrappedMapComponent = withScriptjs(withGoogleMap((props) => {
+
+//     return (
+//         <GoogleMap 
+//             defaultZoom = {10}
+//             defaultCenter = {
+//             {
+//                 lat: 13.756331,
+//                 lng: 100.501762
+//             }
+//             }>
+//         </GoogleMap>
+//     )
+// }));
 
 const mapComponet = ({locations}) => {
     const [show, setShow] = useState(true);
@@ -28,11 +79,8 @@ const mapComponet = ({locations}) => {
                     <Modal.Title>Location Map</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <WrappedMapComponent 
-                        googleMapURL = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyByMdMkdrOqio5sfI8OP3ZZldo9iDf8Jsc"
-                        loadingElement={<div style={{ height: `100%` }} />}
-                        containerElement={<div style={{ height: `400px` }} />}
-                        mapElement={<div style={{ height: `100%` }} />}
+                    <WrappedMapComponent
+                        locations={locations}
                     />
                 </Modal.Body>
         </Modal>
