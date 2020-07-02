@@ -8,7 +8,7 @@ const WrappedMapComponent = compose(
     googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBg3iAIPcacaGNiW3MudLqiEbLwgfHTHoI",
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `400px` }} />,
-    mapElement: <div style={{ height: `100%` }} />,
+    mapElement: <div style={{ height: `100%` }} />
   }),
   withScriptjs,
   withGoogleMap
@@ -57,7 +57,15 @@ const WrappedMapComponent = compose(
                             <Col className="form-group">{selectedLocation.fee}</Col>
                         </Row>
                         <Row>
-                            <Col className="form-group info-window-button-col"><Button> Add </Button></Col>
+                            <Col className="form-group info-window-button-col">
+                                <Button 
+                                    onClick = {
+                                        () => {
+                                            props.onSelectLocation(selectedLocation)
+                                        }
+                                    }
+                                > Add </Button>
+                            </Col>
                         </Row>
                     </Container>
                     
@@ -68,7 +76,7 @@ const WrappedMapComponent = compose(
 });
 
 
-const mapComponet = ({locations, mapStatus, handleClose}) => {
+const mapComponet = ({locations, mapStatus, handleClose, onSelectLocation}) => {
     return (
         <Modal show={mapStatus}
             size = "lg"
@@ -81,6 +89,7 @@ const mapComponet = ({locations, mapStatus, handleClose}) => {
                 <Modal.Body>
                     <WrappedMapComponent
                         locations={locations}
+                        onSelectLocation={onSelectLocation}
                     />
                 </Modal.Body>
         </Modal>

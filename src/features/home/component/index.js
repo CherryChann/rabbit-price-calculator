@@ -6,8 +6,9 @@ import { addDays } from 'date-fns';
 import NavBar from '@components/navBar';
 import SelectByProduct from '@components/selectByProduct';
 import SelectByDate from '@components/selectByDate';
-import LoadingProduct from '@components/loading';
+import Loading from '@components/loading';
 import SelectByLocation from '@components/map';
+import LocationTable from '@components/locationTable';
 import { getProductsIfNeeded } from '@services/productService'; 
 import { getLocationsIfNeeded } from '@services/locationService'; // need to do for pretty directory 
 
@@ -21,7 +22,9 @@ class HomePage extends Component {
             minDate: addDays(new Date(), 1),
             maxDate: addDays(new Date(),7),
             showMap: false,
-            selectedProduct: {}
+            selectedProduct: {},
+            selectedDate: '',
+            selectedLocations: []
         }
     }
     componentDidMount () {
@@ -32,7 +35,7 @@ class HomePage extends Component {
     }
 
     handleChange = (date) => this.setState({
-        startDate: date
+        selectedDate: date
     });
 
     getSelectedProduct = (product) => this.setState({
@@ -52,32 +55,53 @@ class HomePage extends Component {
             showMap: false
         })
     }
+
+    onSelectLocation = (selectedLocation) => {
+        console.log(selectedLocation, 'SelectedLocation', this.state.selectedLocations)
+        this.state.selectedLocations.push(selectedLocation);
+        this.hideMap();
+    }
+
+    removeLocation = (removedLocation) => {
+        console.log('remove');
+        const result = this.state.selectedLocations.filter(location => location.id !== removedLocation.id)
+        this.setState({
+            selectedLocations: result
+        })
+
+    }
     render() {
         return (
             <div>
                 <NavBar></NavBar>
-                <Container>
-                    {
-                        this.props.isLoadingProducts ? 
-                        <LoadingProduct/> : 
+                {
+                    this.props.isLoadingProducts && this.props.isLoadingLocations ?
+                    <Loading/> :
+                    <Container>
                         <SelectByProduct products={this.props.products} onClick={this.getSelectedProduct}/>
-                    }
-                    <SelectByDate startDate={this.state.startDate} minDate={this.state.minDate} maxDate={this.state.maxDate} onChange={this.handleChange} />
-                    <Row>
-                        <Col lg="2" xs="12">
-                            <span>Locations: </span>
-                            
-                        </Col>
-                        <Col lg="3" xs="12" className="form-group">
-                            <Button variant="outline-dark" onClick={this.showMap}>Add Location</Button>
-                        </Col>
-                    </Row>
-                    {
-                        !this.props.isLoadingLocations && this.state.showMap ?
-                        <SelectByLocation locations={this.props.locations} mapStatus={true} handleClose={this.hideMap}/> : 
-                        <LoadingProduct />
-                    }
-            </Container>
+                        <SelectByDate startDate={this.state.startDate} minDate={this.state.minDate} maxDate={this.state.maxDate} onChange={this.handleChange} />
+                        <Row>
+                            <Col lg="2" xs="12">
+                                <span>Locations: </span>
+                                
+                            </Col>
+                            <Col lg="3" xs="12" className="form-group">
+                                <Button variant="outline-dark" onClick={this.showMap}>Add Location</Button>
+                            </Col>
+                        </Row>
+                        {
+                            !this.props.isLoadingLocations && this.state.showMap && (
+                                <SelectByLocation locations={this.props.locations} mapStatus={true} handleClose={this.hideMap} onSelectLocation={this.onSelectLocation}/> 
+                            )
+                        }
+                        {
+                            this.state.selectedLocations.length !== 0 && (
+                                <LocationTable locations={this.state.selectedLocations} onRemove={this.removeLocation}/>
+                            )
+                        }
+                    </Container> 
+                }
+                
             </div>
             
         )
