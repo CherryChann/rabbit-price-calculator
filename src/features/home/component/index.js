@@ -41,12 +41,6 @@ class HomePage extends Component {
         dispatch(getLocationsIfNeeded()); // fetch locations list from api
     }
 
-    componentWillReceiveProps(props, nextProps) {
-        console.log(props, nextProps);
-    }
-    componentDidUpdate () {
-        console.log('did update')
-    }
     handleChange = (date) => {
         let today = new Date();
         let differenceDays = differenceInCalendarDays(date, today);
@@ -74,7 +68,7 @@ class HomePage extends Component {
     }
 
     showMap = () => {
-        console.log('showmap');
+        console.log('showmap', process.env.GOOGLE_API_KEY);
         this.setState({
             showMap: true
         })
