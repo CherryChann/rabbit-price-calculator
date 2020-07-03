@@ -31,6 +31,7 @@ class HomePage extends Component {
             showMap: false,
             selectedProduct: {},
             selectedDate: '',
+            isValidTotal: true,
             selectedLocations: []
         }
     }
@@ -93,12 +94,15 @@ class HomePage extends Component {
                     let total = utils.calculateTotalUnits(this.state.selectedLocations);
                     let totalCost = utils.calculateTotalCost(this.state.selectedLocations, this.state.selectedProduct);
                     let isValidTotalUnit = utils.validateTotalUnits(total, this.state.selectedProduct, this.state.differenceDays);
+                    console.log(isValidTotalUnit, 'After setting validation from utils')
                     this.setState({
                         selectedLocations: result,
                         totalUnits: total,
                         isValidTotalUnit,
                         totalCost
                     })
+                } else {
+                    console.log('when');
                 }
             }
         });   
@@ -107,6 +111,12 @@ class HomePage extends Component {
     setValidStatus = (status) => {
         this.setState({
             isValid: status
+        })
+    }
+    setValidStatusForTotal = (status) => {
+        console.log('Validating total not sure')
+        this.setState({
+            isValidTotal: status
         })
     }
     onSelectLocation = (selectedLocation) => {
@@ -238,9 +248,14 @@ class HomePage extends Component {
                             {
                                 this.state.selectedLocations.length !== 0 && this.state.selectedProduct && (
                                     <Row>
-                                        
                                         <Col md={{ span: 4, offset: 4 }} xs="12" className="form-group">
-                                            <Button onClick={this.onSubmit} disabled={!this.state.isValid} type="button">
+                                            < Button onClick = {
+                                                this.onSubmit
+                                            }
+                                            disabled = {
+                                                this.state.isValidTotalUnit === true ? false : true
+                                            }
+                                            type = "button" >
                                                 {this.props.cartLoading ? 'Loading' : 'Submit'}
                                             </Button>
                                         </Col>

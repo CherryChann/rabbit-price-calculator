@@ -9,6 +9,7 @@ const total = ({
         product
     }) => {
         let max_unit = days > 3 ? product['max_production'][3] : product['max_production'][days];
+        let status = totalUnits > max_unit;
         return (
             <div>
                 {  
@@ -34,7 +35,9 @@ const total = ({
                     <Col lg="3" xs="7">
                         <h4>
                             <Badge variant="secondary">
-                                <strong>{totalUnits}</strong>
+                                <strong> 
+                                    {totalUnits} 
+                                </strong>
                             </Badge>
                         </h4>
                     </Col>
