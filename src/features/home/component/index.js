@@ -229,8 +229,8 @@ class HomePage extends Component {
                         {
                             this.state.selectedLocations.length !== 0 && this.state.selectedProduct &&  (
                             <Total 
-                                text="Total Units:" 
-                                value={this.state.isValid ? this.state.totalUnits : 'Calculating'} 
+                                totalCost={this.state.isValid ? this.state.totalCost : 'Calculating'}
+                                totalUnits={this.state.isValid ? this.state.totalUnits : 'Calculating'} 
                                 days={this.state.differenceDays}
                                 date={this.state.selectedDate}
                                 product={this.state.selectedProduct}
