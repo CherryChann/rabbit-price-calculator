@@ -8,16 +8,17 @@ const total = ({
         date,
         product
     }) => {
+        let max_unit = days > 3 ? product['max_production'][3] : product['max_production'][days];
         return (
             <div>
                 {  
-                    totalUnits > product['max_production'][days] && ( 
+                    totalUnits > max_unit && ( 
                         <Alert variant = {
                             "danger"
                         } >
                             Total units should not be more than &nbsp;
                             {
-                                product['max_production'][days]
+                                max_unit
                             } 
                             &nbsp; for selected date: &nbsp;
                             {
