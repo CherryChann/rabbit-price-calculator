@@ -24,6 +24,7 @@ class HomePage extends Component {
             startDate: addDays(new Date(), 1),
             minDate: addDays(new Date(), 1),
             maxDate: addDays(new Date(),7),
+            isValid: true,
             showMap: false,
             selectedProduct: {},
             selectedDate: '',
@@ -65,28 +66,39 @@ class HomePage extends Component {
         })
     }
 
-    getQuantity = (location, quantity) => {
+    getQuantity = (location, quantity, status) => {
+        
         this.state.selectedLocations.map((stateLocation) => {
-            if(stateLocation.id === location.id) {
-              stateLocation.quantity = parseInt(quantity);
-              stateLocation.price = location.fee + (this.state.selectedProduct.price_per_unit * parseInt(quantity))
-            }  
-        })
-        let result = this.state.selectedLocations;
-        let total = this.calculateTotalUnits(this.state.selectedLocations);
-        let totalCost = this.calculateTotalCost(this.state.selectedLocations);
+            if (stateLocation.id === location.id) {
+                stateLocation.status = status
+                if(status) {
+                    stateLocation.quantity = parseInt(quantity);
+                    stateLocation.price = location.fee + (this.state.selectedProduct.price_per_unit * parseInt(quantity))
+                    let result = this.state.selectedLocations;
+                    let total = this.calculateTotalUnits(this.state.selectedLocations);
+                    let totalCost = this.calculateTotalCost(this.state.selectedLocations);
+                    this.setState({
+                        selectedLocations: result,
+                        totalUnits: total,
+                        totalCost
+                    })
+                }
+            }
+        });
+        
+        
+    }
 
+    setValidStatus = (status) => {
         this.setState({
-            selectedLocations: result,
-            totalUnits: total,
-            totalCost
+            isValid: status
         })
     }
     onSelectLocation = (selectedLocation) => {
         console.log(selectedLocation, 'SelectedLocation', this.state.selectedLocations)
         selectedLocation['price'] = 10;
         selectedLocation['quantity'] = 10;
-
+        selectedLocation['status'] = true; // need to insert from state
         this.state.selectedLocations.push(selectedLocation);
         let total = this.calculateTotalUnits(this.state.selectedLocations);
         let totalCost = this.calculateTotalCost(this.state.selectedLocations);
@@ -115,7 +127,6 @@ class HomePage extends Component {
         return totalCost;
     }
     removeLocation = (removedLocation) => {
-        console.log('remove');
         const result = this.state.selectedLocations.filter(location => location.id !== removedLocation.id)
         let total = this.calculateTotalUnits(result);
         let totalCost = this.calculateTotalCost(result);
@@ -183,19 +194,22 @@ class HomePage extends Component {
                                 getPrice= {
                                     this.getQuantity
                                 }
+                                setValidStatus= {
+                                    this.setValidStatus
+                                }
                                 />
                             )
                         }
                         {
-                            this.state.selectedLocations.length !== 0 && this.state.selectedProduct && (
-                                <Total text="Total Units:" value={this.state.totalUnits}></Total>
-                            )
+                            this.state.selectedLocations.length !== 0 && this.state.selectedProduct &&  (
+                            <Total text="Total Units:" value={this.state.isValid ? this.state.totalUnits : 'Calculating'}></Total> 
+                            ) 
                         }
-                        {
-                            this.state.selectedLocations.length !== 0 && this.state.selectedProduct && (
-                                <Total text="Total Cost:" value={this.state.totalCost}></Total>
-                            )
-                        }
+                        {/* {
+                            this.state.selectedLocations.length !== 0 && this.state.selectedProduct && this.state.isValid ? 
+                            <Total text="Total Cost:" value={this.state.totalUnits}></Total> : 
+                            <Total text="Total Cost:" value={'Calculating'}></Total>
+                        } */}
                     </Container> 
                 }
                 
