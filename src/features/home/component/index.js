@@ -27,12 +27,11 @@ class HomePage extends Component {
             maxDate: addDays(new Date(),7),
             differenceDays: 1,
             isValid: true,
-            validateTotalUnit: true,
+            isValidTotalUnit: true,
             showMap: false,
             selectedProduct: {},
             selectedDate: '',
-            selectedLocations: [],
-            locations: {}
+            selectedLocations: []
         }
     }
 
@@ -89,11 +88,11 @@ class HomePage extends Component {
                     let result = this.state.selectedLocations;
                     let total = utils.calculateTotalUnits(this.state.selectedLocations);
                     let totalCost = utils.calculateTotalCost(this.state.selectedLocations, this.state.selectedProduct);
-                    let totalValid = utils.validateTotalUnits(total, this.state.selectedProduct, this.state.differenceDays);
+                    let isValidTotalUnit = utils.validateTotalUnits(total, this.state.selectedProduct, this.state.differenceDays);
                     this.setState({
                         selectedLocations: result,
                         totalUnits: total,
-                        validateTotalUnit: totalValid,
+                        isValidTotalUnit,
                         totalCost
                     })
                 }
@@ -111,13 +110,13 @@ class HomePage extends Component {
         selectedLocation['quantity'] = 10;
         selectedLocation['status'] = true; // need to insert from state
         this.state.selectedLocations.push(selectedLocation);
-        let total = utils.calculateTotalUnits(this.state.selectedLocations);
+        let totalUnits = utils.calculateTotalUnits(this.state.selectedLocations);
         let totalCost = utils.calculateTotalCost(this.state.selectedLocations, this.state.selectedProduct);
-        let totalValid = utils.validateTotalUnits(total, this.state.selectedProduct, this.state.differenceDays);
+        let isValidTotalUnit = utils.validateTotalUnits(totalUnits, this.state.selectedProduct, this.state.differenceDays);
         this.setState({
-            totalUnits: total,
+            totalUnits,
             showMap: false,
-            validateTotalUnit: totalValid,
+            isValidTotalUnit,
             totalCost
         })
         
@@ -125,13 +124,13 @@ class HomePage extends Component {
 
     removeLocation = (removedLocation) => {
         const result = this.state.selectedLocations.filter(location => location.id !== removedLocation.id)
-        let total = utils.calculateTotalUnits(result);
+        let totalUnits= utils.calculateTotalUnits(result);
         let totalCost = utils.calculateTotalCost(result, this.state.selectedProduct);
-        let totalValid = utils.validateTotalUnits(total, this.state.selectedProduct, this.state.differenceDays);
+        let isValidTotalUnit = utils.validateTotalUnits(totalUnits, this.state.selectedProduct, this.state.differenceDays);
         this.setState({
             selectedLocations: result,
-            totalUnits: total,
-            validateTotalUnit: totalValid,
+            isValidTotalUnit,
+            totalUnits,
             totalCost
         })
 
