@@ -58,10 +58,19 @@ class HomePage extends Component {
     }
 
     getSelectedProduct = (productId) => {
-        const selectedProduct = this.props.products.find(product => product.id === productId)
-        this.setState({
-            selectedProduct
-        });
+        console.log(productId)
+        if (productId !== 'placeholder') {
+            const selectedProduct = this.props.products.find(product => product.id === productId)
+            this.setState({
+                selectedProduct
+            });
+        } else {
+            this.setState({
+                selectedLocations: [],
+                selectedProduct: {}
+            })
+        }
+        
     }
 
     showMap = () => {
