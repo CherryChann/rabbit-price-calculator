@@ -116,7 +116,7 @@ class HomePage extends Component {
         let price = (selectedLocation.max_dist * this.state.selectedProduct.price_per_unit) + selectedLocation.fee; /* destructure to add price and quantity after selection from map*/ 
         selectedLocation['price'] = price;
         selectedLocation['quantity'] = selectedLocation.max_dist;
-        selectedLocation['status'] = true; // need to insert from state
+        selectedLocation['status'] = true;
         this.state.selectedLocations.push(selectedLocation);
         let totalUnits = utils.calculateTotalUnits(this.state.selectedLocations);
         let totalCost = utils.calculateTotalCost(this.state.selectedLocations, this.state.selectedProduct);

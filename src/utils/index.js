@@ -20,7 +20,12 @@ const calculateTotalCost = (locations, product) => {
 /** To validate total units locations not to be more than max_unit of products and selected date */
 const validateTotalUnits = (total, selectedProduct, dateDiff) => { 
     let max_units = selectedProduct['max_production'];
-    let date_max_units = max_units[dateDiff];
+    let date_max_units = 0;
+    if(dateDiff >3) { // since max_production has only for 3 days.
+        date_max_units = max_units[3]
+    } else {
+        date_max_units = max_units[dateDiff];
+    }
     return total < date_max_units;
 }
 

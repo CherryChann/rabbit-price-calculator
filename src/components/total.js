@@ -10,7 +10,7 @@ const total = ({
     }) => {
         return (
             <div>
-                {
+                {  
                     totalUnits > product['max_production'][days] && ( 
                         <Alert variant = {
                             "danger"

@@ -72,7 +72,7 @@ class locationTableComponent extends Component {
                                             }
                                         </td>
                                         <td>
-                                            <Button onClick={() => onRemove(location)}>Remove</Button>
+                                            <Button onClick={() => onRemove(location)} type="button" disabled={!location.status}>Remove</Button>
                                         </td>
                                     </tr>
                                 ))
@@ -84,11 +84,11 @@ class locationTableComponent extends Component {
     }
 }
 locationTableComponent.propTypes = {
-    locations: PropTypes.array.isRequired,
-    product: PropTypes.object.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    getPrice: PropTypes.func.isRequired,
-    setValidStatus: PropTypes.func.isRequired,
+    locations: PropTypes.array.isRequired, /* selected location from map */
+    product: PropTypes.object.isRequired, /* selected product from product selection */
+    onRemove: PropTypes.func.isRequired, /* action when remove button is clicked */
+    getPrice: PropTypes.func.isRequired, /* action when quantity of particular location is changed */
+    setValidStatus: PropTypes.func.isRequired, /* action to set valid status of quantity of particular location to parent component*/
 
 };
 
