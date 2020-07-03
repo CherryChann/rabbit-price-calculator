@@ -253,7 +253,7 @@ class HomePage extends Component {
                                                 this.onSubmit
                                             }
                                             disabled = {
-                                                this.state.isValidTotalUnit === true ? false : true
+                                                this.state.isValidTotalUnit === true && this.state.isValid === true ? false : true
                                             }
                                             type = "button" >
                                                 {this.props.cartLoading ? 'Loading' : 'Submit'}
