@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Alert} from 'react-bootstrap';
+import { Row, Col, Alert, Badge} from 'react-bootstrap';
 import { format } from 'date-fns';
 const total = ({
         totalCost,
@@ -27,23 +27,27 @@ const total = ({
                     )
                 }
                 <Row className="margin-top">
-                    <Col lg="2" xs="12">
+                    <Col lg="2" xs="5" className="form-group">
                         <span>Total Units: </span>
                     </Col>
-                    <Col lg="3" xs="12">
-                        <strong>
-                            {totalUnits}
-                        </strong>
+                    <Col lg="3" xs="7">
+                        <h4>
+                            <Badge variant="secondary">
+                                <strong>{totalUnits}</strong>
+                            </Badge>
+                        </h4>
                     </Col>
                 </Row>
                 <Row className="margin-top">
-                    <Col lg="2" xs="12">
+                    <Col lg="2" xs='5' className="form-group">
                         <span>Total Cost:</span>
                     </Col>
-                    <Col lg="3" xs="12">
-                        <strong>
-                            {totalCost}
-                        </strong>
+                    <Col lg="3" xs='7'>
+                        <h4>
+                            <Badge variant="secondary">
+                                <strong>{totalCost}</strong>
+                            </Badge>
+                        </h4>
                     </Col>
                 </Row>
             </div>

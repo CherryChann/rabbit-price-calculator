@@ -36,7 +36,7 @@ $gradientColor: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
     font-size: 25px;
 }
 
-.btn-outline-dark {
+.btn-primary {
     border: $formControlBorder;
     width: 100%;
 }
@@ -53,4 +53,17 @@ $gradientColor: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
 
 .calculator-icon {
     color: #2cb5e8;
+}
+.card {
+    padding: 15px;
+    margin-top: 15px;
+}
+.text-align-right {
+    text-align: right;
+}
+
+@media only screen and (max-width: 600px) {
+    .mobile-device-input {
+        width: 100px;
+    }
 }

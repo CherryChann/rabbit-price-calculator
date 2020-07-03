@@ -58,7 +58,7 @@ class locationTableComponent extends Component {
                         )
                     }
                     
-                    <Table responsive="sm">
+                    <Table responsive="sm" striped bordered>
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -77,6 +77,7 @@ class locationTableComponent extends Component {
                                         <td>
                                             <Form.Control type = "number"
                                                 placeholder = "quantity"
+                                                className = "text-align-right mobile-device-input"
                                                 onChange={(event) => {
                                                     this.validQuantity(event.target.value, location);
                                                     // getPrice(location, event.target.value)
@@ -86,7 +87,7 @@ class locationTableComponent extends Component {
                                                 }
                                             />
                                         </td>
-                                        <td>
+                                        <td className = "text-align-right" >
                                             {
                                                 location.status ?
                                                 (product.price_per_unit * location.quantity) + location.fee :

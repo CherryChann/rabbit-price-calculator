@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container,Row, Col, Button } from 'react-bootstrap';
+import { Container,Row, Col, Button, Card } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { addDays,differenceInCalendarDays,format } from 'date-fns';
 
@@ -107,7 +107,7 @@ class HomePage extends Component {
     }
     onSelectLocation = (selectedLocation) => {
         selectedLocation['price'] = 10;
-        selectedLocation['quantity'] = 10;
+        selectedLocation['quantity'] = selectedLocation.max_dist;
         selectedLocation['status'] = true; // need to insert from state
         this.state.selectedLocations.push(selectedLocation);
         let totalUnits = utils.calculateTotalUnits(this.state.selectedLocations);
@@ -160,6 +160,7 @@ class HomePage extends Component {
                     this.props.isLoadingProducts && this.props.isLoadingLocations ?
                     <Loading/> :
                     <Container>
+                        <Card>
                         <SelectByProduct 
                             products = {this.props.products}
                             onClick = {
@@ -179,7 +180,7 @@ class HomePage extends Component {
                                         <span>Locations: </span>
                                     </Col>
                                     <Col lg="3" xs="12" className="form-group">
-                                        <Button variant="outline-dark" onClick={this.showMap}>Add Location</Button>
+                                        <Button variant="primary" onClick={this.showMap}>Add Location</Button>
                                     </Col>
                                 </Row>
                                 
@@ -228,9 +229,7 @@ class HomePage extends Component {
                         {
                             this.state.selectedLocations.length !== 0 && this.state.selectedProduct && (
                                 <Row>
-                                    <Col lg="2" xs="12">
-                                       
-                                    </Col>
+                                    
                                     <Col lg="3" xs="12" className="form-group">
                                         <Button onClick={this.onSubmit}>
                                             {this.props.cartLoading ? 'Loading' : 'Submit'}
@@ -240,7 +239,9 @@ class HomePage extends Component {
                                 
                             )
                         }
-                    </Container> 
+                    </Card> 
+                    </Container>
+                    
                 }
                 
             </div>
