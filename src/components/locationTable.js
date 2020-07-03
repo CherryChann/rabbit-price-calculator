@@ -15,35 +15,6 @@ class locationTableComponent extends Component {
             locations: {}
         }
     }
-    
-    // calculateQuantity = (quantity, location, product) => {
-    //     let validStatus = true;
-    //     let message = '';
-    //     let qty = 0;
-    //     let result = {}
-    //     let index = 0;
-    //     if (quantity < 1) {
-    //         validStatus = false;
-    //         message = 'more than 1';
-    //     } else if (quantity > location.max_dist) {
-    //         validStatus = false;
-    //         message = 'not be more than maximum value';
-    //     } else {
-    //         result = {
-    //             locationId: location.id,
-    //             quantity: quantity,
-    //             price: (product.price_per_unit * quantity) + location.fee
-    //         }
-    //         this.state.locations[location.name] = result;
-    //     }
-    //     // console.log(typeof(this.state.locations), index, this.state.locations.length)
-    //     this.setState({
-    //         isValid: validStatus,
-    //         message,
-    //         quantity: qty
-    //     })
-    // }
-
     validQuantity = (quantity, location) => {
         let validStatus = this.checkValidQuantity(quantity, location);
         this.props.setValidStatus(validStatus.status);
@@ -122,9 +93,6 @@ class locationTableComponent extends Component {
                                                 'Calculating'
                                             }
                                         </td>
-                                        <td> {
-                                            location.status
-                                        } </td>
                                         <td>
                                             <Button onClick={() => onRemove(location)}>Remove</Button>
                                         </td>
@@ -133,16 +101,6 @@ class locationTableComponent extends Component {
                             }
                         </tbody>
                     </Table>
-                     {/* {
-                        locations.length !== 0 && product && (
-                            <Total text="Total Units:" value={this.state.totalUnits}></Total>
-                        )
-                    }
-                    {
-                        locations.length !== 0 && product && (
-                            <Total text="Total Cost:" value={this.state.totalCost}></Total>
-                        )
-                    } */}
                 </div>
         )
     }
@@ -156,77 +114,5 @@ locationTableComponent.propTypes = {
     setValidStatus: PropTypes.func.isRequired,
 
 };
-// const locationTableComponent = ({locations, onRemove,product, getQuantity}) => {
-//     const [quantity, setQuantity] = useState(0);
-
-//     return (
-//         <div>
-//             <Table responsive="sm">
-//                 <thead>
-//                     <tr>
-//                         <th>No</th>
-//                         <th>Place</th>
-//                         <th>Unit</th>
-//                         <th>Cost</th>
-//                         <th>Action</th>
-//                     </tr>
-//                 </thead>
-//                 <tbody>
-//                     {
-//                         locations.map((location, index) => ( 
-//                             <tr key={location.id}>
-//                                 <td>{index+1}</td>
-//                                 <td>{location.name}</td>
-//                                 <td>
-//                                     <Form.Control type = "number"
-//                                     placeholder = "quantity"
-//                                     onChange={(event) => {
-//                                         console.log(event.target.value, typeof(quantity))
-//                                         // getQuantity(location, event.target.value);
-//                                         setQuantity(quantity+ parseInt(event.target.value))
-//                                     }}
-//                                     defaultValue = {
-//                                         10
-//                                     }
-//                                     />
-//                                 </td>
-//                                 <td>
-//                                     {(product.price_per_unit * quantity) + location.fee}
-//                                 </td>
-                                    
-//                                 <td>
-//                                     {
-//                                         location.fee
-//                                     }
-//                                 </td>
-//                                 <td>
-//                                     <Button onClick={() => onRemove(location)}>Remove</Button>
-//                                 </td>
-//                             </tr>
-//                         ))
-//                     }
-//                 </tbody>
-//             </Table>
-//             <Row>
-//                 <Col lg="2" xs="12">
-//                     <span>Total Units:</span>
-//                 </Col>
-//                 <Col lg="3" xs="12" className="form-group">
-//                 <span><strong>{locations.length}</strong></span>
-//                 </Col>
-//             </Row>
-//             <Row>
-//                 <Col lg="2" xs="12">
-//                     <span>Total Cost:</span>
-//                 </Col>
-//                 <Col lg="3" xs="12" className="form-group">
-//                 <span><strong>{quantity}</strong></span>
-//                 </Col>
-//             </Row>
-//         </div>
-       
-        
-//     )
-// }
 
 export default locationTableComponent;

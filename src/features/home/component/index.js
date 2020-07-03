@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Container,Row, Col, Button,Alert } from 'react-bootstrap';
+import { Container,Row, Col, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { addDays,differenceInCalendarDays } from 'date-fns';
+import { addDays,differenceInCalendarDays,format } from 'date-fns';
 
 import NavBar from '@components/navBar';
 import SelectByProduct from '@components/selectByProduct';
@@ -14,7 +14,6 @@ import { getProductsIfNeeded } from '@services/productService';
 import { getLocationsIfNeeded } from '@services/locationService'; // need to do for pretty directory 
 
 import '../../../custom.scss';
-import total from '../../../components/total';
 
 class HomePage extends Component {
     constructor(props) {
@@ -154,6 +153,23 @@ class HomePage extends Component {
         })
 
     }
+
+    onSubmit = () => {
+        console.log(this.state);
+        let locations = [];
+        this.state.selectedLocations.map(location => {
+            locations.push({
+                locationId: location.id,
+                quantity: location.quantity
+            })
+        })
+        let request = {
+            date: format(this.state.selectedDate, 'yyyy-MM-dd'),
+            productId: this.state.selectedProduct.id,
+            locations
+        }
+        console.log(request, 'To call api')
+    }
     render() {
         return (
             <div>
@@ -219,13 +235,6 @@ class HomePage extends Component {
                                 />
                             )
                         }
-                        {/* {
-                            !this.state.validateTotalUnit && (
-                                <Alert variant={"danger"}>
-                                    Total units should not be more than max producton of selected date
-                                </Alert>
-                            )
-                        } */}
                         {
                             this.state.selectedLocations.length !== 0 && this.state.selectedProduct &&  (
                             <Total 
@@ -237,11 +246,19 @@ class HomePage extends Component {
                             ></Total> 
                             ) 
                         }
-                        {/* {
-                            this.state.selectedLocations.length !== 0 && this.state.selectedProduct &&  (
-                            <Total text="Total Cost:" value={this.state.isValid ? this.state.totalCost : 'Calculating'}></Total> 
-                            ) 
-                        } */}
+                        {
+                            this.state.selectedLocations.length !== 0 && this.state.selectedProduct && (
+                                <Row>
+                                    <Col lg="2" xs="12">
+                                        {/* <span>Locations: </span> */}
+                                    </Col>
+                                    <Col lg="3" xs="12" className="form-group">
+                                        <Button onClick={this.onSubmit}>Submit</Button>
+                                    </Col>
+                                </Row>
+                                
+                            )
+                        }
                     </Container> 
                 }
                 
