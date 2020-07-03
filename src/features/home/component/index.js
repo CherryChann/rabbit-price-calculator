@@ -13,7 +13,7 @@ import LocationTable from '@components/locationTable';
 import Total from '@components/total';
 import { getProductsIfNeeded } from '@services/productService'; 
 import { getLocationsIfNeeded } from '@services/locationService'; // need to do for pretty directory 
-import { postCart } from '@services/cartService';
+import { postCart,setRedirectPage } from '@services/cartService';
 import '../../../custom.scss';
 
 class HomePage extends Component {
@@ -41,6 +41,12 @@ class HomePage extends Component {
         dispatch(getLocationsIfNeeded()); // fetch locations list from api
     }
 
+    componentWillReceiveProps(props, nextProps) {
+        console.log(props, nextProps);
+    }
+    componentDidUpdate () {
+        console.log('did update')
+    }
     handleChange = (date) => {
         let today = new Date();
         let differenceDays = differenceInCalendarDays(date, today);
@@ -169,14 +175,11 @@ class HomePage extends Component {
             productId: this.state.selectedProduct.id,
             locations
         }
-        this.props.dispatch(postCart(request));
+        this.props.dispatch(postCart(request, this.props.history));
         // this.props.history.push('/success')
 
     }
     render() {
-        if (this.props.redirectTo) {
-            return <Redirect to={this.props.redirectTo} />;
-        }
         return (
             <div>
                 <NavBar></NavBar>
@@ -259,14 +262,13 @@ class HomePage extends Component {
                                         {/* <span>Locations: </span> */}
                                     </Col>
                                     <Col lg="3" xs="12" className="form-group">
-                                        <Button onClick={this.onSubmit}>Submit</Button>
+                                        <Button onClick={this.onSubmit}>
+                                            {this.props.cartLoading ? 'Loading' : 'Submit'}
+                                        </Button>
                                     </Col>
                                 </Row>
                                 
                             )
-                        }
-                        {
-                            this.props.cartLoading === false ? < div > lol </div> : <div>finished</div >
                         }
                     </Container> 
                 }
