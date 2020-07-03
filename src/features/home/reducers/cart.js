@@ -1,4 +1,6 @@
-import intialState from '@state/location';
+import intialState from '@state/cart';
+
+/* to set and update state of cart according action type */
 
 export default function cart(state = intialState, action) {
     switch (action.type) {
@@ -9,8 +11,7 @@ export default function cart(state = intialState, action) {
         case 'RECEIVE_POST_CART':
             return Object.assign({}, state, {
                 isLoading: action.cart.isLoading,
-                data: action.cart.data,
-                redirectTo: action.cart.redirectTo
+                data: action.cart.data
             })
         case 'FAILED_POST_CART':
             return Object.assign({}, state, {

@@ -1,6 +1,6 @@
 const axios = require('axios');
-
-axios.defaults.baseURL = ' https://5efabb3a80d8170016f758ee.mockapi.io';
+console.log(process.env.API_URL)
+axios.defaults.baseURL = process.env.API_URL;
 
 axios.defaults.timeout = 10000;
 axios.defaults.headers.post['Content-Type'] = 'application/json';

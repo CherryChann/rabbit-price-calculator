@@ -4,7 +4,7 @@ export const REQUEST_PRODUCTS = 'REQUEST_PRODUCTS';
 export const RECEIVE_PRODUCTS = 'RECEIVE_PRODUCTS';
 export const FAILED_PRODUCTS = 'FAILED_PRODUCTS';
 
-const requestProducts = () => {
+const requestProducts = () => { // to set loading status of product from initital state
     return {
         type: 'REQUEST_PRODUCTS',
         product: {
@@ -13,7 +13,7 @@ const requestProducts = () => {
     }
 }
 
-const failedProducts = (message) =>{
+const failedProducts = (message) => { // to set error status from initital state
     return {
         type: 'FAILED_PRODUCTS',
         product: {
@@ -22,7 +22,7 @@ const failedProducts = (message) =>{
         }
     }
 }
-const receiveProducts = (data) => {
+const receiveProducts = (data) => { // to set loading status and products from API response from initital state
     return {
         type: 'RECEIVE_PRODUCTS',
         product: {
@@ -35,12 +35,12 @@ const receiveProducts = (data) => {
 const fetchProducts = () => {
     return dispatch => {
         dispatch(requestProducts())
-        APIManager.axios.get('/products')
+        APIManager.axios.get('/products') // to call api end point to receive products 
         .then(response => {
             if (response.status === 200) {
                 let products = response.data
                 console.log(response, 'response from api')
-                dispatch(receiveProducts(products))
+                dispatch(receiveProducts(products)) // to store products from response in state 
             } else {
                 dispatch(failedProducts(APIManager.error.notfound))
             }
@@ -51,7 +51,7 @@ const fetchProducts = () => {
     }
 }
 
-const shouldGetProductsAgain = (state) => {
+const shouldGetProductsAgain = (state) => { // to check whether products are already in state
     if (state.product.data.length) {
         return false;
     } else {
@@ -61,7 +61,7 @@ const shouldGetProductsAgain = (state) => {
 
 export const getProductsIfNeeded = () => {
     return (dispatch, getState) => {
-        if (shouldGetProductsAgain(getState())) {
+        if (shouldGetProductsAgain(getState())) { // to check whether products are already in state if not api will be called. if so, we will use state data
             return dispatch(fetchProducts())
         } else {
             return Promise.resolve()

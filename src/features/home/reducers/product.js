@@ -1,5 +1,7 @@
 import intialState from '@state/product';
 
+/* to set and update state of product according action type */
+
 export default function product(state = intialState, action) {
     switch (action.type) {
         case 'REQUEST_PRODUCTS':

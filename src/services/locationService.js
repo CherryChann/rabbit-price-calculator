@@ -3,7 +3,7 @@ export const REQUEST_LOCATIONS = 'REQUEST_LOCATIONS';
 export const RECEIVE_LOCATIONS = 'RECEIVE_LOCATIONS';
 export const FAILED_LOCATIONS = 'FAILED_LOCATIONS';
 
-const requestLocations = () => {
+const requestLocations = () => { // to set loading status of location from initital state
     return {
         type: 'REQUEST_LOCATIONS',
         location: {
@@ -13,7 +13,7 @@ const requestLocations = () => {
 }
 
 
-const receiveLocations = (data) => {
+const receiveLocations = (data) => { // to set loading status and locations from API response from initital state
     return {
         type: 'RECEIVE_LOCATIONS',
         location: {
@@ -23,7 +23,7 @@ const receiveLocations = (data) => {
     }
 }
 
-const failedLocations = (message) => {
+const failedLocations = (message) => { // to set error status from initital state
     return {
         type: 'FAILED_LOCATIONS',
         location: {
@@ -35,12 +35,12 @@ const failedLocations = (message) => {
 const fetchLocations = () => {
     return dispatch => {
         dispatch(requestLocations())
-        APIManager.axios.get('/locations')
+        APIManager.axios.get('/locations') // to call api end point to receive locations 
         .then(response => {
             if (response.status === 200) {
                 let locations = response.data
                 console.log(response, 'response from location api')
-                dispatch(receiveLocations(locations))
+                dispatch(receiveLocations(locations)) // to store locations from response in state 
             } else {
                 dispatch(failedLocations(APIManager.error.notfound))
             }
@@ -51,7 +51,7 @@ const fetchLocations = () => {
     }
 }
 
-const shouldGetLocationsAgain = (state) => {
+const shouldGetLocationsAgain = (state) => { // to check whether locations are already in state
     if (state.location.data.length) {
         return false;
     } else {
@@ -61,7 +61,7 @@ const shouldGetLocationsAgain = (state) => {
 
 export const getLocationsIfNeeded = () => {
     return (dispatch, getState) => {
-        if (shouldGetLocationsAgain(getState())) {
+        if (shouldGetLocationsAgain(getState())) { // to check whether locations is already in state if not api will be called. if so, we will use state data
             return dispatch(fetchLocations())
         } else {
             return Promise.resolve()
