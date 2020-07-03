@@ -4,7 +4,7 @@ export const REQUEST_PRODUCTS = 'REQUEST_PRODUCTS';
 export const RECEIVE_PRODUCTS = 'RECEIVE_PRODUCTS';
 export const FAILED_PRODUCTS = 'FAILED_PRODUCTS';
 
-export const requestProducts = () => {
+const requestProducts = () => {
     return {
         type: 'REQUEST_PRODUCTS',
         product: {
@@ -13,7 +13,7 @@ export const requestProducts = () => {
     }
 }
 
-export const failedProducts = (message) =>{
+const failedProducts = (message) =>{
     return {
         type: 'FAILED_PRODUCTS',
         product: {
@@ -50,8 +50,6 @@ const fetchProducts = () => {
         });
     }
 }
-
-export default receiveProducts;
 
 const shouldGetProductsAgain = (state) => {
     if (state.product.data.length) {

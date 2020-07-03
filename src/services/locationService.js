@@ -1,9 +1,9 @@
-import APIManager from './APIManager'
+import APIManager from './APIManager';
 export const REQUEST_LOCATIONS = 'REQUEST_LOCATIONS';
 export const RECEIVE_LOCATIONS = 'RECEIVE_LOCATIONS';
 export const FAILED_LOCATIONS = 'FAILED_LOCATIONS';
 
-export const requestLocations = () => {
+const requestLocations = () => {
     return {
         type: 'REQUEST_LOCATIONS',
         location: {
@@ -22,7 +22,8 @@ const receiveLocations = (data) => {
         }
     }
 }
-export const failedLocations = (message) => {
+
+const failedLocations = (message) => {
     return {
         type: 'FAILED_LOCATIONS',
         location: {
@@ -49,8 +50,6 @@ const fetchLocations = () => {
         });
     }
 }
-
-export default receiveLocations;
 
 const shouldGetLocationsAgain = (state) => {
     if (state.location.data.length) {

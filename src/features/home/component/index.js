@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container,Row, Col, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { Redirect } from "react-router-dom";
 import { addDays,differenceInCalendarDays,format } from 'date-fns';
 
 import NavBar from '@components/navBar';
@@ -12,7 +13,7 @@ import LocationTable from '@components/locationTable';
 import Total from '@components/total';
 import { getProductsIfNeeded } from '@services/productService'; 
 import { getLocationsIfNeeded } from '@services/locationService'; // need to do for pretty directory 
-
+import { postCart } from '@services/cartService';
 import '../../../custom.scss';
 
 class HomePage extends Component {
@@ -155,7 +156,7 @@ class HomePage extends Component {
     }
 
     onSubmit = () => {
-        console.log(this.state);
+        console.log(this.state, this.props);
         let locations = [];
         this.state.selectedLocations.map(location => {
             locations.push({
@@ -168,9 +169,14 @@ class HomePage extends Component {
             productId: this.state.selectedProduct.id,
             locations
         }
-        console.log(request, 'To call api')
+        this.props.dispatch(postCart(request));
+        // this.props.history.push('/success')
+
     }
     render() {
+        if (this.props.redirectTo) {
+            return <Redirect to={this.props.redirectTo} />;
+        }
         return (
             <div>
                 <NavBar></NavBar>
@@ -259,6 +265,9 @@ class HomePage extends Component {
                                 
                             )
                         }
+                        {
+                            this.props.cartLoading === false ? < div > lol </div> : <div>finished</div >
+                        }
                     </Container> 
                 }
                 
@@ -273,7 +282,9 @@ const mapStateToProps = state => {
         products: state.product.data,
         isLoadingProducts: state.product.isLoading,
         locations: state.location.data,
-        isLoadingLocations: state.location.isLoading
+        isLoadingLocations: state.location.isLoading,
+        cartLoading: state.cart.isLoading,
+        redirectTo: state.cart.redirectTo
     }
 };
 
