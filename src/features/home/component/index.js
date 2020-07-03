@@ -113,7 +113,8 @@ class HomePage extends Component {
         /** to push selectedLocation from map marker to update the state data from parent component
          * according to changes from child component, map
          */
-        selectedLocation['price'] = 10;
+        let price = (selectedLocation.max_dist * this.state.selectedProduct.price_per_unit) + selectedLocation.fee; /* destructure to add price and quantity after selection from map*/ 
+        selectedLocation['price'] = price;
         selectedLocation['quantity'] = selectedLocation.max_dist;
         selectedLocation['status'] = true; // need to insert from state
         this.state.selectedLocations.push(selectedLocation);
