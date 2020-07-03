@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {
     Container,
-    Jumbotron,
     Row,
     Col,
     Card
@@ -16,7 +15,7 @@ class successPage extends Component {
         <div>
             <NavBar></NavBar>
             <Container>
-                <Jumbotron style={{textAlign: 'center'}}>
+                <Card style={{textAlign: 'center'}}>
                     <h1>Success</h1>
                     <p>
                         The cart has already been created 
@@ -26,7 +25,7 @@ class successPage extends Component {
                             <Link 
                             to = {'/'}
                              style={{ textDecoration: 'none'}}>
-                                <Card>
+                                <Card className="link-card">
                                     <Card.Body>
                                         <Card.Title style={{ color: '#000' }}> <strong>Back to Calculator</strong> </Card.Title>
                                         <i className = "fa fa-calculator fa-4x calculator-icon" ></i>
@@ -34,9 +33,8 @@ class successPage extends Component {
                                 </Card>
                             </Link>
                         </Col>
-                        
                     </Row>
-                </Jumbotron>
+                </Card>
             </Container>
         </div>
         )

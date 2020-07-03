@@ -230,8 +230,8 @@ class HomePage extends Component {
                             this.state.selectedLocations.length !== 0 && this.state.selectedProduct && (
                                 <Row>
                                     
-                                    <Col lg="3" xs="12" className="form-group">
-                                        <Button onClick={this.onSubmit}>
+                                    <Col md={{ span: 4, offset: 4 }} xs="12" className="form-group">
+                                        <Button onClick={this.onSubmit} disabled={!this.state.isValid} type="button">
                                             {this.props.cartLoading ? 'Loading' : 'Submit'}
                                         </Button>
                                     </Col>
