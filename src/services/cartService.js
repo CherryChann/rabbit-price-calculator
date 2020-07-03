@@ -2,7 +2,6 @@ import APIManager from './APIManager';
 export const REQUEST_POST_CART = 'REQUEST_POST_CART';
 export const RECEIVE_POST_CART = 'RECEIVE_POST_CART';
 export const FAILED_POST_CART = 'FAILED_POST_CART';
-export const SET_REDIRECT_PAGE = 'SET_REDIRECT_PAGE';
 
 const requestPostCart = () => {
     return {
@@ -34,14 +33,6 @@ const failedPostCart = (message) => {
     }
 }
 
-export const setRedirectPage = () => {
-    return {
-        type: 'SET_REDIRECT_PAGE',
-        cart: {
-            redirectTo: ''
-        }
-    }
-}
 export const postCart = (data, history) => {
     return dispatch => {
         dispatch(requestPostCart())

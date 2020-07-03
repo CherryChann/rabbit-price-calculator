@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Container,Row, Col, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { Redirect } from "react-router-dom";
 import { addDays,differenceInCalendarDays,format } from 'date-fns';
 
 import NavBar from '@components/navBar';
@@ -12,8 +11,9 @@ import SelectByLocation from '@components/map';
 import LocationTable from '@components/locationTable';
 import Total from '@components/total';
 import { getProductsIfNeeded } from '@services/productService'; 
-import { getLocationsIfNeeded } from '@services/locationService'; // need to do for pretty directory 
-import { postCart,setRedirectPage } from '@services/cartService';
+import { getLocationsIfNeeded } from '@services/locationService'; 
+import { postCart } from '@services/cartService';
+import utils from '@utils/index';
 import '../../../custom.scss';
 
 class HomePage extends Component {
@@ -35,6 +35,7 @@ class HomePage extends Component {
             locations: {}
         }
     }
+
     componentDidMount () {
         const { dispatch } = this.props;
         dispatch(getProductsIfNeeded()); // fetch products list from api
@@ -52,7 +53,6 @@ class HomePage extends Component {
     }
 
     getSelectedProduct = (productId) => {
-        console.log(productId)
         if (productId !== 'placeholder') {
             const selectedProduct = this.props.products.find(product => product.id === productId)
             this.setState({
@@ -68,20 +68,12 @@ class HomePage extends Component {
     }
 
     showMap = () => {
-        console.log('showmap', process.env.GOOGLE_API_KEY);
         this.setState({
             showMap: true
         })
     }
 
-    validatedTotalUnits = (total) => {
-        console.log(this.state.selectedProduct, 'validation for total unit');
-        let max_units = this.state.selectedProduct['max_production'];
-        let date_max_units = max_units[this.state.differenceDays];
-        return total < date_max_units
-    }
     hideMap = () => {
-        console.log('hidemap',this.state.selectedProduct);
         this.setState({
             showMap: false
         })
@@ -95,9 +87,9 @@ class HomePage extends Component {
                     stateLocation.quantity = parseInt(quantity);
                     stateLocation.price = location.fee + (this.state.selectedProduct.price_per_unit * parseInt(quantity))
                     let result = this.state.selectedLocations;
-                    let total = this.calculateTotalUnits(this.state.selectedLocations);
-                    let totalCost = this.calculateTotalCost(this.state.selectedLocations);
-                    let totalValid = this.validatedTotalUnits(total);
+                    let total = utils.calculateTotalUnits(this.state.selectedLocations);
+                    let totalCost = utils.calculateTotalCost(this.state.selectedLocations, this.state.selectedProduct);
+                    let totalValid = utils.validateTotalUnits(total, this.state.selectedProduct, this.state.differenceDays);
                     this.setState({
                         selectedLocations: result,
                         totalUnits: total,
@@ -106,9 +98,7 @@ class HomePage extends Component {
                     })
                 }
             }
-        });
-        
-        
+        });   
     }
 
     setValidStatus = (status) => {
@@ -121,9 +111,9 @@ class HomePage extends Component {
         selectedLocation['quantity'] = 10;
         selectedLocation['status'] = true; // need to insert from state
         this.state.selectedLocations.push(selectedLocation);
-        let total = this.calculateTotalUnits(this.state.selectedLocations);
-        let totalCost = this.calculateTotalCost(this.state.selectedLocations);
-        let totalValid = this.validatedTotalUnits(total);
+        let total = utils.calculateTotalUnits(this.state.selectedLocations);
+        let totalCost = utils.calculateTotalCost(this.state.selectedLocations, this.state.selectedProduct);
+        let totalValid = utils.validateTotalUnits(total, this.state.selectedProduct, this.state.differenceDays);
         this.setState({
             totalUnits: total,
             showMap: false,
@@ -133,28 +123,11 @@ class HomePage extends Component {
         
     }
 
-    calculateTotalUnits = (locations) => {
-        let total = 0;
-        locations.map(location => {
-            total += location.quantity
-        })
-        // this.validatedTotalUnits(total);
-        return total;
-    }
-
-    calculateTotalCost = (locations) => {
-        let totalCost = 0;
-        locations.map(location => {
-            let locationCost = location.fee + (this.state.selectedProduct.price_per_unit * parseInt(location.quantity))
-            totalCost += locationCost;
-        })
-        return totalCost;
-    }
     removeLocation = (removedLocation) => {
         const result = this.state.selectedLocations.filter(location => location.id !== removedLocation.id)
-        let total = this.calculateTotalUnits(result);
-        let totalCost = this.calculateTotalCost(result);
-        let totalValid = this.validatedTotalUnits(total);
+        let total = utils.calculateTotalUnits(result);
+        let totalCost = utils.calculateTotalCost(result, this.state.selectedProduct);
+        let totalValid = utils.validateTotalUnits(total, this.state.selectedProduct, this.state.differenceDays);
         this.setState({
             selectedLocations: result,
             totalUnits: total,
@@ -179,8 +152,6 @@ class HomePage extends Component {
             locations
         }
         this.props.dispatch(postCart(request, this.props.history));
-        // this.props.history.push('/success')
-
     }
     render() {
         return (
@@ -235,9 +206,6 @@ class HomePage extends Component {
                                     product = {
                                         this.state.selectedProduct
                                     }
-                                    pLocations = {
-                                        this.state.locations
-                                    }
                                     getPrice= {
                                         this.getQuantity
                                     }
@@ -262,7 +230,7 @@ class HomePage extends Component {
                             this.state.selectedLocations.length !== 0 && this.state.selectedProduct && (
                                 <Row>
                                     <Col lg="2" xs="12">
-                                        {/* <span>Locations: </span> */}
+                                       
                                     </Col>
                                     <Col lg="3" xs="12" className="form-group">
                                         <Button onClick={this.onSubmit}>
@@ -288,8 +256,7 @@ const mapStateToProps = state => {
         isLoadingProducts: state.product.isLoading,
         locations: state.location.data,
         isLoadingLocations: state.location.isLoading,
-        cartLoading: state.cart.isLoading,
-        redirectTo: state.cart.redirectTo
+        cartLoading: state.cart.isLoading
     }
 };
 

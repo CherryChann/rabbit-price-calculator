@@ -47,7 +47,7 @@ class locationTableComponent extends Component {
     }
 
     render() {
-        const { locations, product, onRemove, getPrice,pLocations } = this.props;
+        const { locations, product, onRemove } = this.props;
         return (
                 <div>
                     {
@@ -108,7 +108,6 @@ class locationTableComponent extends Component {
 locationTableComponent.propTypes = {
     locations: PropTypes.array.isRequired,
     product: PropTypes.object.isRequired,
-    pLocations: PropTypes.object.isRequired,
     onRemove: PropTypes.func.isRequired,
     getPrice: PropTypes.func.isRequired,
     setValidStatus: PropTypes.func.isRequired,

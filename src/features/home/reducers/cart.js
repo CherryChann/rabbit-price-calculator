@@ -17,10 +17,6 @@ export default function cart(state = intialState, action) {
                 isError: action.cart.isError,
                 errorMessage: action.cart.message
             })
-        case 'SET_REDIRECT_PAGE':
-            return Object.assign({}, state, {
-                redirectTo: action.cart.redirectTo
-            })
         default:
             return state
     }
