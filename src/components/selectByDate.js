@@ -14,7 +14,7 @@ const selectByDate = ({startDate,minDate, maxDate, onChange}) => (
                 selected={startDate}
                 minDate={minDate}
                 maxDate={maxDate}
-                dateFormat="dd/MM/yyyy"
+                dateFormat="dd-MM-yyyy"
                 onChange = {
                     date => onChange(date)
                 }

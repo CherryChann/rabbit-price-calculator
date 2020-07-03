@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Container,Row, Col, Button } from 'react-bootstrap';
+import { Container,Row, Col, Button,Alert } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { addDays } from 'date-fns';
+import { addDays,differenceInCalendarDays } from 'date-fns';
 
 import NavBar from '@components/navBar';
 import SelectByProduct from '@components/selectByProduct';
@@ -14,6 +14,7 @@ import { getProductsIfNeeded } from '@services/productService';
 import { getLocationsIfNeeded } from '@services/locationService'; // need to do for pretty directory 
 
 import '../../../custom.scss';
+import total from '../../../components/total';
 
 class HomePage extends Component {
     constructor(props) {
@@ -24,7 +25,9 @@ class HomePage extends Component {
             startDate: addDays(new Date(), 1),
             minDate: addDays(new Date(), 1),
             maxDate: addDays(new Date(),7),
+            differenceDays: 1,
             isValid: true,
+            validateTotalUnit: true,
             showMap: false,
             selectedProduct: {},
             selectedDate: '',
@@ -39,9 +42,12 @@ class HomePage extends Component {
     }
 
     handleChange = (date) => {
+        let today = new Date();
+        let differenceDays = differenceInCalendarDays(date, today);
         this.setState({
             selectedDate: date,
-            startDate: date
+            startDate: date,
+            differenceDays
         });
     }
 
@@ -59,6 +65,12 @@ class HomePage extends Component {
         })
     }
 
+    validatedTotalUnits = (total) => {
+        console.log(this.state.selectedProduct, 'validation for total unit');
+        let max_units = this.state.selectedProduct['max_production'];
+        let date_max_units = max_units[this.state.differenceDays];
+        return total < date_max_units
+    }
     hideMap = () => {
         console.log('hidemap',this.state.selectedProduct);
         this.setState({
@@ -67,7 +79,6 @@ class HomePage extends Component {
     }
 
     getQuantity = (location, quantity, status) => {
-        
         this.state.selectedLocations.map((stateLocation) => {
             if (stateLocation.id === location.id) {
                 stateLocation.status = status
@@ -77,9 +88,11 @@ class HomePage extends Component {
                     let result = this.state.selectedLocations;
                     let total = this.calculateTotalUnits(this.state.selectedLocations);
                     let totalCost = this.calculateTotalCost(this.state.selectedLocations);
+                    let totalValid = this.validatedTotalUnits(total);
                     this.setState({
                         selectedLocations: result,
                         totalUnits: total,
+                        validateTotalUnit: totalValid,
                         totalCost
                     })
                 }
@@ -95,16 +108,17 @@ class HomePage extends Component {
         })
     }
     onSelectLocation = (selectedLocation) => {
-        console.log(selectedLocation, 'SelectedLocation', this.state.selectedLocations)
         selectedLocation['price'] = 10;
         selectedLocation['quantity'] = 10;
         selectedLocation['status'] = true; // need to insert from state
         this.state.selectedLocations.push(selectedLocation);
         let total = this.calculateTotalUnits(this.state.selectedLocations);
         let totalCost = this.calculateTotalCost(this.state.selectedLocations);
+        let totalValid = this.validatedTotalUnits(total);
         this.setState({
             totalUnits: total,
             showMap: false,
+            validateTotalUnit: totalValid,
             totalCost
         })
         
@@ -115,6 +129,7 @@ class HomePage extends Component {
         locations.map(location => {
             total += location.quantity
         })
+        // this.validatedTotalUnits(total);
         return total;
     }
 
@@ -130,9 +145,11 @@ class HomePage extends Component {
         const result = this.state.selectedLocations.filter(location => location.id !== removedLocation.id)
         let total = this.calculateTotalUnits(result);
         let totalCost = this.calculateTotalCost(result);
+        let totalValid = this.validatedTotalUnits(total);
         this.setState({
             selectedLocations: result,
             totalUnits: total,
+            validateTotalUnit: totalValid,
             totalCost
         })
 
@@ -145,20 +162,23 @@ class HomePage extends Component {
                     this.props.isLoadingProducts && this.props.isLoadingLocations ?
                     <Loading/> :
                     <Container>
-                        < SelectByProduct products = {
-                            this.props.products
-                        }
-                        onClick = {
-                            this.getSelectedProduct
-                        }
+                        <SelectByProduct 
+                            products = {this.props.products}
+                            onClick = {
+                                this.getSelectedProduct
+                            }
                         />
-                        <SelectByDate startDate={this.state.startDate} minDate={this.state.minDate} maxDate={this.state.maxDate} onChange={this.handleChange} />
+                        <SelectByDate 
+                            startDate={this.state.startDate} 
+                            minDate={this.state.minDate} 
+                            maxDate={this.state.maxDate} 
+                            onChange={this.handleChange} 
+                        />
                         {
                             Object.entries(this.state.selectedProduct).length !== 0 && this.state.selectedDate && (
                                 <Row>
                                     <Col lg="2" xs="12">
                                         <span>Locations: </span>
-                                        
                                     </Col>
                                     <Col lg="3" xs="12" className="form-group">
                                         <Button variant="outline-dark" onClick={this.showMap}>Add Location</Button>
@@ -179,36 +199,48 @@ class HomePage extends Component {
                         }
                         {
                             this.state.selectedLocations.length !== 0 && this.state.selectedProduct && (
-                                <LocationTable locations = {
-                                    this.state.selectedLocations
-                                }
-                                onRemove = {
-                                    this.removeLocation
-                                }
-                                product = {
-                                    this.state.selectedProduct
-                                }
-                                pLocations = {
-                                    this.state.locations
-                                }
-                                getPrice= {
-                                    this.getQuantity
-                                }
-                                setValidStatus= {
-                                    this.setValidStatus
-                                }
+                                <LocationTable 
+                                    locations = {this.state.selectedLocations}
+                                    onRemove = {
+                                        this.removeLocation
+                                    }
+                                    product = {
+                                        this.state.selectedProduct
+                                    }
+                                    pLocations = {
+                                        this.state.locations
+                                    }
+                                    getPrice= {
+                                        this.getQuantity
+                                    }
+                                    setValidStatus= {
+                                        this.setValidStatus
+                                    }
                                 />
                             )
                         }
+                        {/* {
+                            !this.state.validateTotalUnit && (
+                                <Alert variant={"danger"}>
+                                    Total units should not be more than max producton of selected date
+                                </Alert>
+                            )
+                        } */}
                         {
                             this.state.selectedLocations.length !== 0 && this.state.selectedProduct &&  (
-                            <Total text="Total Units:" value={this.state.isValid ? this.state.totalUnits : 'Calculating'}></Total> 
+                            <Total 
+                                text="Total Units:" 
+                                value={this.state.isValid ? this.state.totalUnits : 'Calculating'} 
+                                days={this.state.differenceDays}
+                                date={this.state.selectedDate}
+                                product={this.state.selectedProduct}
+                            ></Total> 
                             ) 
                         }
                         {/* {
-                            this.state.selectedLocations.length !== 0 && this.state.selectedProduct && this.state.isValid ? 
-                            <Total text="Total Cost:" value={this.state.totalUnits}></Total> : 
-                            <Total text="Total Cost:" value={'Calculating'}></Total>
+                            this.state.selectedLocations.length !== 0 && this.state.selectedProduct &&  (
+                            <Total text="Total Cost:" value={this.state.isValid ? this.state.totalCost : 'Calculating'}></Total> 
+                            ) 
                         } */}
                     </Container> 
                 }
