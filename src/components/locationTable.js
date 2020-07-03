@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Table, Button, Form, Alert } from 'react-bootstrap';
-import Total from '@components/total';
-
+import { Table, Button, Form, Alert } from 'react-bootstrap';
+import utils from '@utils/index';
 class locationTableComponent extends Component {
     constructor(props) {
         super(props)
@@ -16,34 +15,13 @@ class locationTableComponent extends Component {
         }
     }
     validQuantity = (quantity, location) => {
-        let validStatus = this.checkValidQuantity(quantity, location);
+        let validStatus = utils.checkValidQuantity(quantity, location);
         this.props.setValidStatus(validStatus.status);
         this.props.getPrice(location, quantity, validStatus.status);
         this.setState({
             isValid: validStatus.status,
             message: validStatus.message
         })
-    }
-
-    checkValidQuantity = (quantity, location) => {
-        console.log('hi there')
-        if (quantity < 1 || quantity === '' || quantity === null || Number.isNaN(quantity)) {
-            console.log('should be here');
-            return {
-                status: false,
-                message: 'Quantity should be more than zero'
-            };
-        } else if (quantity > location.max_dist) {
-            return {
-                status: false,
-                message: 'Quantity should not be more than maximum value'
-            };;
-        } else {
-            return {
-                status: true,
-                message: ''
-            };
-        }
     }
 
     render() {
@@ -80,7 +58,6 @@ class locationTableComponent extends Component {
                                                 className = "text-align-right mobile-device-input"
                                                 onChange={(event) => {
                                                     this.validQuantity(event.target.value, location);
-                                                    // getPrice(location, event.target.value)
                                                 }}
                                                 defaultValue = {
                                                     location.quantity

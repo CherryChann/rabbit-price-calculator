@@ -27,7 +27,7 @@ class successPage extends Component {
                              style={{ textDecoration: 'none'}}>
                                 <Card className="link-card">
                                     <Card.Body>
-                                        <Card.Title style={{ color: '#000' }}> <strong>Back to Calculator</strong> </Card.Title>
+                                        <Card.Title style={{ color: '#000' }}> <strong>Back to Calculator</strong></Card.Title>
                                         <i className = "fa fa-calculator fa-4x calculator-icon" ></i>
                                     </Card.Body>
                                 </Card>

@@ -24,8 +24,28 @@ const validateTotalUnits = (total, selectedProduct, dateDiff) => {
     return total < date_max_units;
 }
 
+/** To validate quantity input is not empty or not less than or not more than maximum distribution */
+const checkValidQuantity = (quantity, location) => {
+    if (quantity < 1 || quantity === '' || quantity === null || Number.isNaN(quantity)) {
+        return {
+            status: false,
+            message: 'Quantity should be more than zero'
+        };
+    } else if (quantity > location.max_dist) {
+        return {
+            status: false,
+            message: 'Quantity should not be more than maximum value'
+        };;
+    } else {
+        return {
+            status: true,
+            message: ''
+        };
+    }
+}
 export default {
     calculateTotalUnits,
     calculateTotalCost,
-    validateTotalUnits
+    validateTotalUnits,
+    checkValidQuantity
 }

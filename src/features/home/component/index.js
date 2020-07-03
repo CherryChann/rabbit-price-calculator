@@ -43,7 +43,7 @@ class HomePage extends Component {
 
     handleChange = (date) => {
         let today = new Date();
-        let differenceDays = differenceInCalendarDays(date, today);
+        let differenceDays = differenceInCalendarDays(date, today); /** To get max production of selected date need to know date difference */
         this.setState({
             selectedDate: date,
             startDate: date,
@@ -51,13 +51,14 @@ class HomePage extends Component {
         });
     }
 
-    getSelectedProduct = (productId) => {
-        if (productId !== 'placeholder') {
+    getSelectedProduct = (productId) => { /** when product is changed, parent component need to set product Id to pass child component */
+        if (productId !== 'placeholder') { 
             const selectedProduct = this.props.products.find(product => product.id === productId)
             this.setState({
                 selectedProduct
             });
         } else {
+            /** when placeholder is selected, the form needs to set to be initital state */
             this.setState({
                 selectedLocations: [],
                 selectedProduct: {}
@@ -78,9 +79,12 @@ class HomePage extends Component {
         })
     }
 
-    getQuantity = (location, quantity, status) => {
+    getQuantity = (location, quantity, status) => { 
+        /** when the quantity of each location has changed, the quanity and price needs to be updated as well. so this 
+         * method is called when the quantity input of selected location is changed.
+        */
         this.state.selectedLocations.map((stateLocation) => {
-            if (stateLocation.id === location.id) {
+            if (stateLocation.id === location.id) { 
                 stateLocation.status = status
                 if(status) {
                     stateLocation.quantity = parseInt(quantity);
@@ -106,6 +110,9 @@ class HomePage extends Component {
         })
     }
     onSelectLocation = (selectedLocation) => {
+        /** to push selectedLocation from map marker to update the state data from parent component
+         * according to changes from child component, map
+         */
         selectedLocation['price'] = 10;
         selectedLocation['quantity'] = selectedLocation.max_dist;
         selectedLocation['status'] = true; // need to insert from state
@@ -122,7 +129,8 @@ class HomePage extends Component {
         
     }
 
-    removeLocation = (removedLocation) => {
+    removeLocation = (removedLocation) => { 
+        /** when remove button is clicked, the selected location needs to be removed and also total unit and total cost needs to updated accordingly*/
         const result = this.state.selectedLocations.filter(location => location.id !== removedLocation.id)
         let totalUnits= utils.calculateTotalUnits(result);
         let totalCost = utils.calculateTotalCost(result, this.state.selectedProduct);
@@ -137,7 +145,7 @@ class HomePage extends Component {
     }
 
     onSubmit = () => {
-        console.log(this.state, this.props);
+        /** to call the POST cart end point to save the card object along with locations, selected product and selected date*/
         let locations = [];
         this.state.selectedLocations.map(location => {
             locations.push({
@@ -161,89 +169,87 @@ class HomePage extends Component {
                     <Loading/> :
                     <Container>
                         <Card>
-                        <SelectByProduct 
-                            products = {this.props.products}
-                            onClick = {
-                                this.getSelectedProduct
-                            }
-                        />
-                        <SelectByDate 
-                            startDate={this.state.startDate} 
-                            minDate={this.state.minDate} 
-                            maxDate={this.state.maxDate} 
-                            onChange={this.handleChange} 
-                        />
-                        {
-                            Object.entries(this.state.selectedProduct).length !== 0 && this.state.selectedDate && (
-                                <Row>
-                                    <Col lg="2" xs="12">
-                                        <span>Locations: </span>
-                                    </Col>
-                                    <Col lg="3" xs="12" className="form-group">
-                                        <Button variant="primary" onClick={this.showMap}>Add Location</Button>
-                                    </Col>
-                                </Row>
-                                
-                            )
-                        }
-                        {
-                            !this.props.isLoadingLocations && this.state.showMap && (
-                                <SelectByLocation 
-                                    locations={this.props.locations} 
-                                    mapStatus={true} 
-                                    handleClose={this.hideMap} 
-                                    selectedLocations={this.state.selectedLocations}
-                                    onSelectLocation={this.onSelectLocation}/> 
-                            )
-                        }
-                        {
-                            this.state.selectedLocations.length !== 0 && this.state.selectedProduct && (
-                                <LocationTable 
-                                    locations = {this.state.selectedLocations}
-                                    onRemove = {
-                                        this.removeLocation
-                                    }
-                                    product = {
-                                        this.state.selectedProduct
-                                    }
-                                    getPrice= {
-                                        this.getQuantity
-                                    }
-                                    setValidStatus= {
-                                        this.setValidStatus
-                                    }
-                                />
-                            )
-                        }
-                        {
-                            this.state.selectedLocations.length !== 0 && this.state.selectedProduct &&  (
-                            <Total 
-                                totalCost={this.state.isValid ? this.state.totalCost : 'Calculating'}
-                                totalUnits={this.state.isValid ? this.state.totalUnits : 'Calculating'} 
-                                days={this.state.differenceDays}
-                                date={this.state.selectedDate}
-                                product={this.state.selectedProduct}
-                            ></Total> 
-                            ) 
-                        }
-                        {
-                            this.state.selectedLocations.length !== 0 && this.state.selectedProduct && (
-                                <Row>
+                            <SelectByProduct 
+                                products = {this.props.products}
+                                onClick = {
+                                    this.getSelectedProduct
+                                }
+                            />
+                            <SelectByDate 
+                                startDate={this.state.startDate} 
+                                minDate={this.state.minDate} 
+                                maxDate={this.state.maxDate} 
+                                onChange={this.handleChange} 
+                            />
+                            {
+                                Object.entries(this.state.selectedProduct).length !== 0 && this.state.selectedDate && (
+                                    <Row>
+                                        <Col lg="2" xs="12">
+                                            <span>Locations: </span>
+                                        </Col>
+                                        <Col lg="3" xs="12" className="form-group">
+                                            <Button variant="primary" onClick={this.showMap}>Add Location</Button>
+                                        </Col>
+                                    </Row>
                                     
-                                    <Col md={{ span: 4, offset: 4 }} xs="12" className="form-group">
-                                        <Button onClick={this.onSubmit} disabled={!this.state.isValid} type="button">
-                                            {this.props.cartLoading ? 'Loading' : 'Submit'}
-                                        </Button>
-                                    </Col>
-                                </Row>
-                                
-                            )
-                        }
-                    </Card> 
-                    </Container>
-                    
+                                )
+                            }
+                            {
+                                !this.props.isLoadingLocations && this.state.showMap && (
+                                    <SelectByLocation 
+                                        locations={this.props.locations} 
+                                        mapStatus={true} 
+                                        handleClose={this.hideMap} 
+                                        selectedLocations={this.state.selectedLocations}
+                                        onSelectLocation={this.onSelectLocation}/> 
+                                )
+                            }
+                            {
+                                this.state.selectedLocations.length !== 0 && this.state.selectedProduct && (
+                                    <LocationTable 
+                                        locations = {this.state.selectedLocations}
+                                        onRemove = {
+                                            this.removeLocation
+                                        }
+                                        product = {
+                                            this.state.selectedProduct
+                                        }
+                                        getPrice= {
+                                            this.getQuantity
+                                        }
+                                        setValidStatus= {
+                                            this.setValidStatus
+                                        }
+                                    />
+                                )
+                            }
+                            {
+                                this.state.selectedLocations.length !== 0 && this.state.selectedProduct &&  (
+                                <Total 
+                                    totalCost={this.state.isValid ? this.state.totalCost : 'Calculating'}
+                                    totalUnits={this.state.isValid ? this.state.totalUnits : 'Calculating'} 
+                                    days={this.state.differenceDays}
+                                    date={this.state.selectedDate}
+                                    product={this.state.selectedProduct}
+                                ></Total> 
+                                ) 
+                            }
+                            {
+                                this.state.selectedLocations.length !== 0 && this.state.selectedProduct && (
+                                    <Row>
+                                        
+                                        <Col md={{ span: 4, offset: 4 }} xs="12" className="form-group">
+                                            <Button onClick={this.onSubmit} disabled={!this.state.isValid} type="button">
+                                                {this.props.cartLoading ? 'Loading' : 'Submit'}
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                    
+                                )
+                            }
+                        </Card> 
+                    </Container>  
                 }
-                
             </div>
             
         )
@@ -251,6 +257,7 @@ class HomePage extends Component {
 }
 
 const mapStateToProps = state => {
+    /** to connect data from redux-state with commponent state*/
     return {
         products: state.product.data,
         isLoadingProducts: state.product.isLoading,

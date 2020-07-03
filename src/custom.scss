@@ -51,7 +51,7 @@ $gradientColor: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
     color: #fff;
 }
 
-.calculator-icon {
+.calculator-icon, .spinner-icon {
     color: #2cb5e8;
 }
 .card {
@@ -64,6 +64,9 @@ $gradientColor: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
 
 .link-card {
     background-color: #e6e6e6;
+}
+.text-align-center {
+    text-align: center;
 }
 @media only screen and (max-width: 600px) {
     .mobile-device-input {
