@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col} from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
+// import "react-datepicker/dist/react-datepicker.css";
 
 const selectByDate = ({startDate,minDate, maxDate, onChange}) => (
     <Row>
