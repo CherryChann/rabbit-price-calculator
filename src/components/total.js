@@ -29,12 +29,12 @@ const total = ({
                     )
                 }
                 <Row className="margin-top">
-                    <Col lg="2" xs="5" className="form-group">
+                    <Col lg="2" xs="5" className="form-group total-unit-padding-top">
                         <span>Total Units: </span>
                     </Col>
                     <Col lg="3" xs="7">
                         <h4>
-                            <Badge variant="secondary">
+                            <Badge variant="secondary" className="badge-vertical-align">
                                 <strong> 
                                     {totalUnits} 
                                 </strong>
@@ -48,7 +48,7 @@ const total = ({
                     </Col>
                     <Col lg="3" xs='7'>
                         <h4>
-                            <Badge variant="secondary">
+                            <Badge variant="secondary" className="badge-vertical-align">
                                 <strong>{totalCost}</strong>
                             </Badge>
                         </h4>

@@ -36,7 +36,7 @@ class locationTableComponent extends Component {
                         )
                     }
                     
-                    <Table responsive="sm" striped bordered>
+                    <Table responsive="sm" striped bordered className="table-margin-top">
                         <thead>
                             <tr>
                                 <th>No</th>
