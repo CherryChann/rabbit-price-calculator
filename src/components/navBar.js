@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import '../custom.scss';
+import '../index.scss';
 
 const NavBarComponent = () => (
     <Navbar variant = "dark"

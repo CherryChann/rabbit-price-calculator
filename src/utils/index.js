@@ -10,6 +10,7 @@ const calculateTotalUnits = (locations) => {
 /** To caculate total cost for selected locations */
 const calculateTotalCost = (locations, product) => {
     let totalCost = 0;
+    console.log('ti is called')
     locations.map(location => {
         let locationCost = location.fee + (product.price_per_unit * parseInt(location.quantity))
         totalCost += locationCost;
@@ -21,12 +22,12 @@ const calculateTotalCost = (locations, product) => {
 const validateTotalUnits = (total, selectedProduct, dateDiff) => { 
     let max_units = selectedProduct['max_production'];
     let date_max_units = 0;
-    if(dateDiff >3) { // since max_production has only for 3 days.
+    if(dateDiff > 3) { // since max_production has only for 3 days.
         date_max_units = max_units[3]
     } else {
         date_max_units = max_units[dateDiff];
     }
-    return total < date_max_units;
+    return total > date_max_units;
 }
 
 /** To validate quantity input is not empty or not less than or not more than maximum distribution */

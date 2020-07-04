@@ -10,10 +10,11 @@ const total = ({
     }) => {
         let max_unit = days > 3 ? product['max_production'][3] : product['max_production'][days];
         let status = totalUnits > max_unit;
+        console.log(status, 'hihih', max_unit)
         return (
             <div>
                 {  
-                    totalUnits > max_unit && ( 
+                    status && ( 
                         <Alert variant = {
                             "danger"
                         } >
