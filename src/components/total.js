@@ -15,9 +15,10 @@ const total = ({
             <div>
                 {  
                     status && ( 
-                        <Alert variant = {
-                            "danger"
-                        } >
+                        <Alert 
+                            id = "total-units-error"
+                            variant = { "danger"} 
+                        >
                             Total units should not be more than &nbsp;
                             {
                                 max_unit
@@ -35,7 +36,7 @@ const total = ({
                     </Col>
                     <Col lg="3" xs="7">
                         <h4>
-                            <Badge variant="secondary" className="badge-vertical-align">
+                            <Badge variant="secondary" className="badge-vertical-align" id="total-unit-badge">
                                 <strong> 
                                     {totalUnits} 
                                 </strong>
@@ -49,7 +50,7 @@ const total = ({
                     </Col>
                     <Col lg="3" xs='7'>
                         <h4>
-                            <Badge variant="secondary" className="badge-vertical-align">
+                            <Badge variant="secondary" className="badge-vertical-align" id="total-cost-badge">
                                 <strong>{totalCost}</strong>
                             </Badge>
                         </h4>

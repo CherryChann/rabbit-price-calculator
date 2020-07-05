@@ -90,7 +90,6 @@ describe('Shallow renderen the table with seletcted locations', () => {
     it('should show error message if quantity of location is less than one', () => {
         let row = container.find('tbody tr').at(0);
         let col = row.find('td').at(2); // quantity column
-        let btnCol = row.find('td').at(4); // action column
         col.find('.mobile-device-input').simulate('change', {
             target: {
                 value: 0
@@ -102,7 +101,6 @@ describe('Shallow renderen the table with seletcted locations', () => {
     it('should show error message if quantity of location is more than maximum value of location', () => {
         let row = container.find('tbody tr').at(0);
         let col = row.find('td').at(2); // quantity column
-        let btnCol = row.find('td').at(4); // action column
         col.find('.mobile-device-input').simulate('change', {
             target: {
                 value: 2000
@@ -114,7 +112,6 @@ describe('Shallow renderen the table with seletcted locations', () => {
     it('should show error message if quantity of location is ok to accept', () => {
         let row = container.find('tbody tr').at(0);
         let col = row.find('td').at(2); // quantity column
-        let btnCol = row.find('td').at(4); // action column
         col.find('.mobile-device-input').simulate('change', {
             target: {
                 value: 200
