@@ -10,13 +10,15 @@ const total = ({
     }) => {
         let max_unit = days > 3 ? product['max_production'][3] : product['max_production'][days];
         let status = totalUnits > max_unit;
+        console.log(status, 'hihih', max_unit)
         return (
             <div>
                 {  
-                    totalUnits > max_unit && ( 
-                        <Alert variant = {
-                            "danger"
-                        } >
+                    status && ( 
+                        <Alert 
+                            id = "total-units-error"
+                            variant = { "danger"} 
+                        >
                             Total units should not be more than &nbsp;
                             {
                                 max_unit
@@ -29,12 +31,12 @@ const total = ({
                     )
                 }
                 <Row className="margin-top">
-                    <Col lg="2" xs="5" className="form-group">
+                    <Col lg="2" xs="5" className="form-group total-unit-padding-top">
                         <span>Total Units: </span>
                     </Col>
                     <Col lg="3" xs="7">
                         <h4>
-                            <Badge variant="secondary">
+                            <Badge variant="secondary" className="badge-vertical-align" id="total-unit-badge">
                                 <strong> 
                                     {totalUnits} 
                                 </strong>
@@ -48,7 +50,7 @@ const total = ({
                     </Col>
                     <Col lg="3" xs='7'>
                         <h4>
-                            <Badge variant="secondary">
+                            <Badge variant="secondary" className="badge-vertical-align" id="total-cost-badge">
                                 <strong>{totalCost}</strong>
                             </Badge>
                         </h4>

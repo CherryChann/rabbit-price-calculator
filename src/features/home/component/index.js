@@ -14,7 +14,7 @@ import { getProductsIfNeeded } from '@services/productService';
 import { getLocationsIfNeeded } from '@services/locationService'; 
 import { postCart } from '@services/cartService';
 import utils from '@utils/index';
-import '../../../custom.scss';
+import '../../../index.scss';
 
 class HomePage extends Component {
     constructor(props) {
@@ -55,8 +55,10 @@ class HomePage extends Component {
     getSelectedProduct = (productId) => { /** when product is changed, parent component need to set product Id to pass child component */
         if (productId !== 'placeholder') { 
             const selectedProduct = this.props.products.find(product => product.id === productId)
+            let totalCost = utils.calculateTotalCost(this.state.selectedLocations, selectedProduct);
             this.setState({
-                selectedProduct
+                selectedProduct,
+                totalCost
             });
         } else {
             /** when placeholder is selected, the form needs to set to be initital state */
@@ -182,6 +184,7 @@ class HomePage extends Component {
                         <Card>
                             <SelectByProduct 
                                 products = {this.props.products}
+                                selectedProduct={this.state.selectedProduct}
                                 onClick = {
                                     this.getSelectedProduct
                                 }
@@ -253,7 +256,7 @@ class HomePage extends Component {
                                                 this.onSubmit
                                             }
                                             disabled = {
-                                                this.state.isValidTotalUnit === true && this.state.isValid === true ? false : true
+                                                this.state.isValidTotalUnit === false && this.state.isValid === true ? false : true
                                             }
                                             type = "button" >
                                                 {this.props.cartLoading ? 'Loading' : 'Submit'}

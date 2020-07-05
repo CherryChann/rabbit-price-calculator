@@ -30,13 +30,14 @@ class locationTableComponent extends Component {
                 <div>
                     {
                         !this.state.isValid && (
-                            <Alert variant={"danger"}>
+                            <Alert variant={"danger"}
+                                id='quantity-erorr'>
                                 {this.state.message}
                             </Alert>
                         )
                     }
                     
-                    <Table responsive="sm" striped bordered>
+                    <Table responsive="sm" striped bordered className="table-margin-top">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -72,7 +73,7 @@ class locationTableComponent extends Component {
                                             }
                                         </td>
                                         <td>
-                                            <Button onClick={() => onRemove(location)} type="button" disabled={!location.status}>Remove</Button>
+                                            <Button onClick={() => onRemove(location)} type="button" disabled={!location.status} className="btn-remove">Remove</Button>
                                         </td>
                                     </tr>
                                 ))

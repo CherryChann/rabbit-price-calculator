@@ -17,7 +17,9 @@ $gradientColor: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
     border: $formControlBorder;
     border-radius: $formControlRadius;
 }
-
+.total-unit-padding-top {
+    padding-top: 5px;
+}
 .react-datepicker-wrapper {
     width: 100%;
 }
@@ -67,6 +69,12 @@ $gradientColor: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
 }
 .text-align-center {
     text-align: center;
+}
+.table-margin-top {
+    margin-top: 15px;
+}
+.badge-vertical-align {
+    vertical-align: middle;
 }
 @media only screen and (max-width: 600px) {
     .mobile-device-input {
