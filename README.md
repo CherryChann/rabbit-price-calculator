@@ -14,3 +14,6 @@ Before running the application with `npm start`, copy the .env.local as .env and
 Runs the app in the development mode.<br />
 Open [http://localhost:8080](http://localhost:8080) to view it in the browser.
 
+### `npm test`
+
+For unit testing of some components, run the `npm test` for running the whole test suites.
