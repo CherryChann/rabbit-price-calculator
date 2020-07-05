@@ -33,7 +33,7 @@ describe('Shallow rendered total component ', () => {
             date={props.date}
             product={props.product}
         ></Total>);
-    it('should render select box with products', () => {
+    it('should render total component', () => {
         expect(container.html()).toMatchSnapshot();
     });
 

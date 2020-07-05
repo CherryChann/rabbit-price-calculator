@@ -109,7 +109,7 @@ describe('Shallow renderen the table with seletcted locations', () => {
         expect(container.find('#quantity-erorr').length).toEqual(1); // error shows 
     });
     
-    it('should show error message if quantity of location is ok to accept', () => {
+    it('should not show error message if quantity of location is ok to accept', () => {
         let row = container.find('tbody tr').at(0);
         let col = row.find('td').at(2); // quantity column
         col.find('.mobile-device-input').simulate('change', {

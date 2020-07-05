@@ -10,7 +10,7 @@ const props = {
     onChange: onChange
 }
 
-describe('Shallow rendered date ', () => {
+describe('Shallow rendered select by date component', () => {
     const container = shallow(
         <SelectByDate 
             startDate={props.startDate}
