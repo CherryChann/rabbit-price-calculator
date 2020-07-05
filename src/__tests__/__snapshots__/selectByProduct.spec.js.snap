@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Shallow rendered select by product component  should render select box 1`] = `"<div class=\\"margin-top row\\"><div class=\\"col-lg-2 col-12\\"><span>Products: </span></div><div class=\\"col-lg-3 col-12\\"><div class=\\"form-group\\"><select class=\\"product-selection form-control\\"><option value=\\"placeholder\\"> Select Products...</option><option value=\\"1\\">product 1</option><option selected=\\"\\" value=\\"2\\">product 2</option></select></div></div></div>"`;

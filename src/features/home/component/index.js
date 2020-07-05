@@ -184,6 +184,7 @@ class HomePage extends Component {
                         <Card>
                             <SelectByProduct 
                                 products = {this.props.products}
+                                selectedProduct={this.state.selectedProduct}
                                 onClick = {
                                     this.getSelectedProduct
                                 }

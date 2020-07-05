@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Col} from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
+
 // import "react-datepicker/dist/react-datepicker.css";
 
 const selectByDate = ({startDate,minDate, maxDate, onChange}) => (
@@ -18,7 +19,7 @@ const selectByDate = ({startDate,minDate, maxDate, onChange}) => (
                 onChange = {
                     date => onChange(date)
                 }
-                placeholderText="Select a date after 5 days ago"/>
+                placeholderText="date selection"/>
         </Col>
     </Row>
 )
