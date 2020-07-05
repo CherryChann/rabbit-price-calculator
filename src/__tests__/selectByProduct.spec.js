@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import SelectByProduct from '../components/selectByProduct';
-import { Row, Col, Form} from 'react-bootstrap';
 
 const onClick = (value) => { 
     console.log(value, 'mock function');
@@ -10,11 +9,22 @@ const props = {
     products: [
         {
             id: 1,
-            name: 'product 1'
-        },
-        {
+            name: "Flyer - One Sided",
+            max_production: {
+                "1": 5000,
+                "2": 8000,
+                "3": 12000
+            },
+            price_per_unit: 0.01
+        }, {
             id: 2,
-            name: 'product 2'
+            name: "Flyer - Two Sided",
+            max_production: {
+                "1": 3000,
+                "2": 6000,
+                "3": 9000
+            },
+            price_per_unit: 0.017
         }
     ],
     onClick: onClick
