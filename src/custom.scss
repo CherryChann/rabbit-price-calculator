@@ -1,14 +1,8 @@
-// $body-bg: #000;
-$primary: #2CB5E8;
-@import '~bootstrap/scss/bootstrap.scss';
-@import '~react-datepicker/dist/react-datepicker.css';
-@import '~font-awesome/css/font-awesome.min.css';
 $formControlHeight : calc(1.5em + 0.75rem + 2px);
 $formControlColor : #495057;
 $formControlRadius : 0.25em;
 $formControlBorder: 1px solid #ced4da;
 $gradientColor: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
-
 .custom-date-picker {
     display: block;
     width: 100%;
@@ -23,11 +17,9 @@ $gradientColor: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
     border: $formControlBorder;
     border-radius: $formControlRadius;
 }
-
 .total-unit-padding-top {
     padding-top: 5px;
 }
-
 .react-datepicker-wrapper {
     width: 100%;
 }
@@ -40,7 +32,6 @@ $gradientColor: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
     justify-content: center;
     background-image: $gradientColor;
 }
-
 .nav-link span {
     font-weight: bold;
     color: white;
@@ -53,7 +44,7 @@ $gradientColor: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
 }
 
 
-.info-window-button-col button {
+.info-window-button-col button{
     width: 100%;
 }
 
@@ -62,16 +53,13 @@ $gradientColor: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
     color: #fff;
 }
 
-.calculator-icon,
-.spinner-icon {
+.calculator-icon, .spinner-icon {
     color: #2cb5e8;
 }
-
 .card {
     padding: 15px;
     margin-top: 15px;
 }
-
 .text-align-right {
     text-align: right;
 }
@@ -79,22 +67,17 @@ $gradientColor: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
 .link-card {
     background-color: #e6e6e6;
 }
-
 .text-align-center {
     text-align: center;
 }
-
 .table-margin-top {
     margin-top: 15px;
 }
-
 .badge-vertical-align {
     vertical-align: middle;
 }
-
 @media only screen and (max-width: 600px) {
     .mobile-device-input {
         width: 100px;
     }
 }
-

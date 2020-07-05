@@ -10,6 +10,7 @@ To install the required packages for this project, run `npm install`.
 
 ### `npm start`
 
+Before running the application with `npm start`, copy the .env.local as .env and change the value of google api key.
 Runs the app in the development mode.<br />
 Open [http://localhost:8080](http://localhost:8080) to view it in the browser.
 
